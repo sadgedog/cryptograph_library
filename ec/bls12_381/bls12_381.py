@@ -73,7 +73,6 @@ def multiply(point: list, scalar: int) -> list:
     else:
         return add(multiply(double(point), int(scalar // 2)), point)
 
-
 # Field Element
 def FE(point_element: int) -> int:
     return point_element % fm

@@ -14,9 +14,6 @@ from bls12_381 import (
     normalize,
 )
 
-from py_ecc import optimized_bls12_381 as opt
-CURVE_ORDER = opt.curve_order
-
 # lagrange interpolation in elliptic curve
 def elliptic_lagrange(x: int, point: list, p: str) -> int:
     x_point = []
