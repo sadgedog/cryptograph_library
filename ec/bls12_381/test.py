@@ -1,4 +1,6 @@
 # test calc for bls12-381 elliptic curve
+import random
+import string
 import secrets
 import random
 from py_ecc import optimized_bls12_381 as opt
@@ -7,6 +9,7 @@ from bls12_381 import (
     double,
     multiply,
     normalize,
+    on_curve,
 )
 from default import (
     fm,
@@ -21,6 +24,11 @@ from lagrange import (
     generate_share,
     elliptic_lagrange,
     elliptic_lagrange_coef,
+)
+from elgamal import (
+    key_generator,
+    encrypt,
+    decrypt,
 )
 
 # reference
@@ -59,6 +67,12 @@ def check(expected, mode, i1, i2, i3, i4, i5, i6, s):
 def rnd_scalar():
     return secrets.randbelow(co)
 
+
+def rnd_str(n):
+   randlst = [random.choice(string.ascii_letters + string.digits) for i in range(n)]
+   return ''.join(randlst)
+
+
 # check calc result using py_ecc optimized bls12-381 library
 def main():
     # calculate tests
@@ -69,7 +83,9 @@ def main():
         check(double_ref(opt.G1), "double", G1[0], G1[1], G1[2], G1[0], G1[1], G1[2], s)
         check(add_ref(opt.G1, opt.G1), "add", G1[0], G1[1], G1[2], G1[0], G1[1], G1[2], s)
         check(multiply_ref(opt.G1, s), "multiply", G1[0], G1[1], G1[2], G1[0], G1[1], G1[2], s)
-        
+
+    print("elliptic calc: OK")
+    
     #############################################################################
     # 一般的なラグランジュ補間では, xy平面上のn次関数f(x)をf(x)上のn-1点から復元する.
     # n次関数f(x)を(x, f(x)*G1)と定義することで, 楕円曲線上でラグランジュ補間を行える.
@@ -106,7 +122,40 @@ def main():
         print(normalize(s11[1]))
 
         if(normalize(RS) == normalize(s11[1])):
-            print("OK")
+            print("elliptic lagrange test: OK")
 
-    
+    # 楕円曲線上のランダムな点が曲線状に存在するか確認
+    cnt = 0
+    while (cnt < 10):
+        cnt += 1
+        H1 = multiply(G1, rnd_scalar())
+        if (on_curve(H1)):
+            print("True")
+        else:
+            print("on curve test: NG")
+            break
+
+    print("on curve test: OK")
+
+    # ElGamal on Elliptic Curve test
+    # 楕円エルガマルのテスト(暗号化, 復号)
+    cnt = 0
+    while (cnt < 10):
+        cnt += 1
+        c = random.randint(5, 10)
+        m = rnd_str(c)
+        sk, PK = key_generator()
+        [C1, C2] = encrypt(m, PK)
+
+        r = decrypt(sk, C1, C2)
+        if (r == m):
+            print(r, "==>", m)
+            print("OK")
+        else:
+            print("ElGamal on EC test: NG")
+            break
+
+    print("ElGamal on EC test: OK")
+        
 main()
+    

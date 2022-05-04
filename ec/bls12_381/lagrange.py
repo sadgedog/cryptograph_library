@@ -11,7 +11,6 @@ from default import (
 from bls12_381 import (
     add,
     multiply,
-    normalize,
 )
 
 # lagrange interpolation in elliptic curve

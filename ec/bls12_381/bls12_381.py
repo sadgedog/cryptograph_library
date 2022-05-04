@@ -9,6 +9,11 @@ from default import (
     Z2,
 )
 
+# Elliptic Curve(BLS12-381)
+# y^2 = x^3 + 4
+# or
+# Y^2
+
 # Elliptic curve doubling
 # using affine coordinates
 # affine coordinates is slower than projective coordinates
@@ -83,3 +88,18 @@ def FE(point_element: int) -> int:
 def normalize(point: list) -> list:
     X, Y, Z = point
     return [FE(X * sympy.mod_inverse(Z, fm)), FE(Y * sympy.mod_inverse(Z, fm))]
+
+# check point exists on curve
+def on_curve(point: list) -> bool:
+    # affine coordinate
+    if (len(point) == 2):
+        x, y = point
+        return FE(y**2) == FE(x**3 + 4)
+    # projective coordinate
+    else:
+        X, Y, Z = point
+        return FE(Y**2 * Z) == FE(X**3 + 4 * Z**3)
+
+def negative(point: list):
+    X, Y, Z = point
+    return [X, -Y, Z]
