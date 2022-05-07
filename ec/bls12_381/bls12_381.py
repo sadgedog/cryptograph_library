@@ -1,4 +1,3 @@
-import sympy
 from default import (
     fm,
     hfm,
@@ -8,11 +7,17 @@ from default import (
     Z1,
     Z2,
 )
+from utils import (
+    cmp_add,
+    cmp_sub,
+    cmp_mul,
+    cmp_div,
+)
 
 # Elliptic Curve(BLS12-381)
 # y^2 = x^3 + 4
 # or
-# Y^2
+# Y^2 * Z = X^3 + 4Z^3
 
 # Elliptic curve doubling
 # using affine coordinates
@@ -23,6 +28,7 @@ def double_p(pt):
     new_x = m**2 - 2 * x
     new_y = -m * new_x + m * x - y
     return (new_x, new_y)
+
 
 # double in projective coordinates
 # P = [X : Y : Z]
@@ -37,6 +43,7 @@ def double(point):
     new_Y = FE(W * (4 * B - H) - 8 * Y ** 2 * S ** 2)
     new_Z = FE(8 * S ** 3)
     return [new_X, new_Y, new_Z]
+
 
 # add in projective coordinates
 # P = [X1 : Y1 : Z1]
@@ -67,6 +74,7 @@ def add(point1, point2) -> int:
     new_Z = FE(V_cubed * W)
     return [new_X, new_Y, new_Z]
 
+
 # multiply in projective coordinates
 def multiply(point: list, scalar: int) -> list:
     if scalar == 0:
@@ -78,16 +86,19 @@ def multiply(point: list, scalar: int) -> list:
     else:
         return add(multiply(double(point), int(scalar // 2)), point)
 
+    
 # Field Element
 def FE(point_element: int) -> int:
     return point_element % fm
+
 
 # nomalizer
 # projective coordinates -> affine coordinates
 # [X : Y : Z] -> [x, y]
 def normalize(point: list) -> list:
     X, Y, Z = point
-    return [FE(X * sympy.mod_inverse(Z, fm)), FE(Y * sympy.mod_inverse(Z, fm))]
+    return [FE(X * pow(Z, -1, fm)), FE(Y * pow(Z, -1, fm))]
+
 
 # check point exists on curve
 def on_curve(point: list) -> bool:
@@ -100,6 +111,37 @@ def on_curve(point: list) -> bool:
         X, Y, Z = point
         return FE(Y**2 * Z) == FE(X**3 + 4 * Z**3)
 
+
+# [X : Y : Z] ==> [X : -Y : Z]
 def negative(point: list):
     X, Y, Z = point
     return [X, -Y, Z]
+
+
+
+#######################################
+# 拡大体の導入のテスト
+# 二次拡大体では複素数と同様に演算を定義する
+#######################################
+
+# double for Quadratic extension field
+def double_G2(point: list):
+    x = G2[0]
+    y = G2[1]
+    z = G2[2]
+    W = cmp_mul(cmp_mul(3, x), x)
+    S = cmp_mul(y, z)
+    B = cmp_mul(cmp_mul(x, y), S)
+    H = cmp_sub(cmp_mul(W, W), cmp_mul(8, B))
+    new_X = cmp_mul(cmp_mul(2, H), S)
+    new_Y = cmp_sub(cmp_mul(W, cmp_sub(cmp_mul(4, B), H)),
+                    cmp_mul(cmp_mul(cmp_mul(cmp_mul(8, y), y), S), S))
+    new_Z = cmp_mul(cmp_mul(8, cmp_mul(S, S)), S)
+    return [new_X, new_Y, new_Z]
+
+
+def add_G2(point1: list, point2: list):
+    return 0
+
+def multiply_G2(point: list, scalar: int):
+    return 0

@@ -21,6 +21,7 @@ from bls12_381 import (
 def rnd_scalar():
     return secrets.randbelow(co)
 
+
 def key_generator():
     # secret key: sk = random
     sk = rnd_scalar()
@@ -29,6 +30,7 @@ def key_generator():
     print("sk: ", sk)
     print("PK: ", PK)
     return sk, PK
+
 
 # Encryption:
 # M <- message to point
@@ -46,6 +48,7 @@ def encrypt(message: str, PK: list):
     print("C2: ", C2)
     return [C1, C2]
 
+
 # Decryption
 # M = C2 - xC1
 # m = M // 100
@@ -54,7 +57,8 @@ def decrypt(sk: int, C1: list, C2: list) -> str:
     m = normalize(M)[0] // 100
     result = m.to_bytes((m.bit_length() + 7) // 8, "big").decode("utf-8")
     return result
-    
+
+
 def message_to_point(message: str) -> list:
     m = int.from_bytes(message.encode("utf-8"), "big") * 100
     for i in range(100):

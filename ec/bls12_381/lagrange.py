@@ -13,6 +13,7 @@ from bls12_381 import (
     multiply,
 )
 
+
 # lagrange interpolation in elliptic curve
 def elliptic_lagrange(x: int, point: list, p: str) -> int:
     x_point = []
@@ -33,6 +34,7 @@ def elliptic_lagrange(x: int, point: list, p: str) -> int:
         
     return result
 
+
 def elliptic_lagrange_coef(x: int, i: int, a: int, x_point: list) -> int:
     result = 1
     for j in range(a):
@@ -41,14 +43,17 @@ def elliptic_lagrange_coef(x: int, i: int, a: int, x_point: list) -> int:
             result %= co
     return result
 
+
 def rnd_scalar():
     return secrets.randbelow(co)
+
 
 def hash_to_scalar(msg):
     return (
         int.from_bytes(hashlib.sha3_256(str(msg).encode()).digest(), "big")
         % co
     )
+
 
 def generate_share(secret: int, n: int, t: int):
     coefficients = [secret] + [hash_to_scalar(f"vss:coefficient:{secret}:{j}") for j in range(1, t)]

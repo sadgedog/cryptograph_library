@@ -2,7 +2,6 @@
 import random
 import string
 import secrets
-import random
 from py_ecc import optimized_bls12_381 as opt
 from bls12_381 import (
     add,
@@ -10,6 +9,7 @@ from bls12_381 import (
     multiply,
     normalize,
     on_curve,
+    double_G2,
 )
 from default import (
     fm,
@@ -30,16 +30,22 @@ from elgamal import (
     encrypt,
     decrypt,
 )
+from utils import (
+    FQ2_to_list,
+)
 
 # reference
 def double_ref(point):
     return opt.double(point)
 
+
 def add_ref(point1, point2):
     return opt.add(point1, point2)
 
+
 def multiply_ref(point, scalar):
     return opt.multiply(point, scalar)
+
 
 def check(expected, mode, i1, i2, i3, i4, i5, i6, s):
     if (mode == "double"):
@@ -64,6 +70,15 @@ def check(expected, mode, i1, i2, i3, i4, i5, i6, s):
         else:
             print("expected", expected, "\nbut got", r)
 
+
+def check2(mode, a):
+    if (mode == "double"):
+        result = double_G2(a)
+        ref = list(opt.double(a))
+        return result == ref
+            
+            
+            
 def rnd_scalar():
     return secrets.randbelow(co)
 
@@ -91,7 +106,7 @@ def main():
     # n次関数f(x)を(x, f(x)*G1)と定義することで, 楕円曲線上でラグランジュ補間を行える.
     #############################################################################
     # 楕円曲線上のラグランジュ補間のテスト
-    # 補間する楕円曲線上の点をs11とし, 閾値k = 8とする.
+    # 簡単のため, 補間する楕円曲線上の点をs11とし, 閾値k = 8とする.
     # elliptic lagrange test
     # (scalar, elliptic point)
     cnt = 0
@@ -142,7 +157,7 @@ def main():
     cnt = 0
     while (cnt < 10):
         cnt += 1
-        c = random.randint(5, 10)
+        c = random.randint(10, 20)
         m = rnd_str(c)
         sk, PK = key_generator()
         [C1, C2] = encrypt(m, PK)
@@ -150,12 +165,26 @@ def main():
         r = decrypt(sk, C1, C2)
         if (r == m):
             print(r, "==>", m)
-            print("OK")
         else:
             print("ElGamal on EC test: NG")
             break
 
     print("ElGamal on EC test: OK")
-        
+
+    # Quadratic extension field test
+    # 二次拡大体上での演算のテスト
+    cnt = 0
+    while (cnt < 10):
+        cnt += 1
+        result = double_G2(G2)
+        ref = FQ2_to_list(opt.double(opt.G2))
+        if (result == ref):
+            print(result, "==>", ref)
+        else:
+            print("expected", ref, "\nbut got", result)
+            exit(1)
+
+    print("Doubling on quadratic extension field: OK")
+
+
 main()
-    
