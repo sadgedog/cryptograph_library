@@ -78,6 +78,7 @@ def add(point1, point2) -> int:
 # multiply in projective coordinates
 def multiply(point: list, scalar: int) -> list:
     if scalar == 0:
+        # Z1
         return [1, 1, 0]
     elif scalar == 1:
         return point
@@ -140,7 +141,41 @@ def double_G2(point: list):
 
 
 def add_G2(point1: list, point2: list):
-    return 0
+    if point1[2] == 0 or point2[2] == 0:
+        return point1 if point2[2] == 0 else point2
+    X_1, Y_1, Z_1 = point1[0], point1[1], point1[2]
+    X_2, Y_2, Z_2 = point2[0], point2[1], point2[2]
+    U1 = cmp_mul(Y_2, Z_1)
+    U2 = cmp_mul(Y_1, Z_2)
+    V1 = cmp_mul(X_2, Z_1)
+    V2 = cmp_mul(X_1, Z_2)
+    
+    if V1 == V2 and U1 == U2:
+        return double_G2(point1)
+    elif V1 == V2:
+        return [[1, 0], [1, 0], [0, 0]]
+    U = cmp_sub(U1, U2)
+    V = cmp_sub(V1, V2)
 
+    V_squared = cmp_mul(V, V)
+    V_squared_times_V2 = cmp_mul(V_squared, V2)
+    V_cubed = cmp_mul(V, V_squared)
+    W = cmp_mul(Z_1, Z_2)
+    A = cmp_sub(cmp_sub(cmp_mul(cmp_mul(U, U), W), V_cubed), cmp_mul(2, V_squared_times_V2))
+    
+    new_X = cmp_mul(V, A)
+    new_Y = cmp_sub(cmp_mul(U, cmp_sub(V_squared_times_V2, A)), cmp_mul(V_cubed, U2))
+    new_Z = cmp_mul(V_cubed, W)
+    return [new_X, new_Y, new_Z]
+
+    
 def multiply_G2(point: list, scalar: int):
-    return 0
+    if scalar == 0:
+        # Z2
+        return [[1, 0], [1, 0], [0, 0]]
+    elif scalar == 1:
+        return point
+    elif not scalar % 2:
+        return multiply_G2(double_G2(point), scalar // 2)
+    else:
+        return add_G2(multiply_G2(double_G2(point), int(scalar // 2)), point)

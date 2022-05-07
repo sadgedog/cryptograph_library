@@ -10,6 +10,8 @@ from bls12_381 import (
     normalize,
     on_curve,
     double_G2,
+    add_G2,
+    multiply_G2,
 )
 from default import (
     fm,
@@ -165,6 +167,7 @@ def main():
 
     # Quadratic extension field test
     # 二次拡大体上での演算のテスト
+    # double_G2
     cnt = 0
     while (cnt < 10):
         cnt += 1
@@ -174,6 +177,7 @@ def main():
         else:
             result = double_G2(result)
             ref = opt.double(ref)
+            
         if (result == FQ2_to_list(ref)):
             print(result, "==>", ref)
         else:
@@ -181,6 +185,40 @@ def main():
             break
 
     print("Doubling on quadratic extension field: OK")
+
+    # add_G2
+    cnt = 0
+    while (cnt < 10):
+        cnt += 1
+        if (cnt == 1):
+            result = add_G2(G2, G2)
+            ref = opt.add(opt.G2, opt.G2)
+        else:
+            result = add_G2(G2, result)
+            ref = opt.add(opt.G2, ref)
+
+        if (result == FQ2_to_list(ref)):
+            print(result, "==>", ref)
+        else:
+            print("expected", ref, "\nbut got", result)
+            break
+
+    print("Add on quadratic extension field: OK")
+
+    # multiply_G2
+    cnt = 0
+    while (cnt < 10):
+        cnt += 1
+        r = rnd_scalar()
+        result = multiply_G2(G2, r)
+        ref = opt.multiply(opt.G2, r)
+        if (result == FQ2_to_list(ref)):
+            print(result, "==>", ref)
+        else:
+            print("expected", ref, "\nbut got", result)
+            break
+
+    print("Multiply on quadratic extension field: OK")
 
     print("ALL CONFIRMED")
 
