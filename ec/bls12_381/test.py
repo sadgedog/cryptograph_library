@@ -70,14 +70,6 @@ def check(expected, mode, i1, i2, i3, i4, i5, i6, s):
         else:
             print("expected", expected, "\nbut got", r)
 
-
-def check2(mode, a):
-    if (mode == "double"):
-        result = double_G2(a)
-        ref = list(opt.double(a))
-        return result == ref
-            
-            
             
 def rnd_scalar():
     return secrets.randbelow(co)
@@ -176,15 +168,20 @@ def main():
     cnt = 0
     while (cnt < 10):
         cnt += 1
-        result = double_G2(G2)
-        ref = FQ2_to_list(opt.double(opt.G2))
-        if (result == ref):
+        if (cnt == 1):
+            result = double_G2(G2)
+            ref = opt.double(opt.G2)
+        else:
+            result = double_G2(result)
+            ref = opt.double(ref)
+        if (result == FQ2_to_list(ref)):
             print(result, "==>", ref)
         else:
             print("expected", ref, "\nbut got", result)
-            exit(1)
+            break
 
     print("Doubling on quadratic extension field: OK")
 
+    print("ALL CONFIRMED")
 
 main()

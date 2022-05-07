@@ -118,7 +118,6 @@ def negative(point: list):
     return [X, -Y, Z]
 
 
-
 #######################################
 # 拡大体の導入のテスト
 # 二次拡大体では複素数と同様に演算を定義する
@@ -126,9 +125,9 @@ def negative(point: list):
 
 # double for Quadratic extension field
 def double_G2(point: list):
-    x = G2[0]
-    y = G2[1]
-    z = G2[2]
+    x = point[0]
+    y = point[1]
+    z = point[2]
     W = cmp_mul(cmp_mul(3, x), x)
     S = cmp_mul(y, z)
     B = cmp_mul(cmp_mul(x, y), S)
