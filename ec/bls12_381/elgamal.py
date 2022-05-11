@@ -66,3 +66,7 @@ def message_to_point(message: str) -> list:
         sqr_y = FE(x**3 + 4)
         if (pow(sqr_y, (fm - 1) // 2, fm) == 1):
             return [x, sqr_y, 1]
+
+
+
+# TODO: 文字列を１文字ずつEnc, Decするように変更

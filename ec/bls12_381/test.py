@@ -36,6 +36,8 @@ from utils import (
     FQ2_to_list,
 )
 
+import rsa
+
 # reference
 def double_ref(point):
     return opt.double(point)
@@ -220,6 +222,23 @@ def main():
 
     print("Multiply on quadratic extension field: OK")
 
+    # rsa test
+    cnt = 0
+    while (cnt < 10):
+        cnt += 1
+        
+        sk, pk = rsa.key_generator(10)
+        c = random.randint(10, 100)
+        m = rnd_str(c)
+        c = rsa.encrypt(m, pk)
+        print("c: ", c)
+
+        res = rsa.decrypt(sk, c)
+        if (m == res):
+            print(m, "==>", res)
+        else:
+            print("expected", m, "\nbut got", res)
+            
     print("ALL CONFIRMED")
 
 
