@@ -27,9 +27,9 @@ def key_generator(i: int):
 def rnd_scalar(i: int):
     return secrets.randbits(i)
 
-# 文字列を１文字ずつ区切り, それぞれ暗号化
+# separate and encrypt each char
 def encrypt(message: str, pk: list):
-    l = []
+    l = list()
     for i in range(len(message)):
         l.append(int.from_bytes(message[i].encode("utf-8"), "big"))
     #l = [ord(char) for char in message]

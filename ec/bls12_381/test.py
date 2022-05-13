@@ -156,8 +156,7 @@ def main():
         c = random.randint(10, 20)
         m = rnd_str(c)
         sk, PK = key_generator()
-        [C1, C2] = encrypt(m, PK)
-
+        C1, C2 = encrypt(m, PK)
         r = decrypt(sk, C1, C2)
         if (r == m):
             print(r, "==>", m)
@@ -231,8 +230,6 @@ def main():
         c = random.randint(10, 100)
         m = rnd_str(c)
         c = rsa.encrypt(m, pk)
-        print("c: ", c)
-
         res = rsa.decrypt(sk, c)
         if (m == res):
             print(m, "==>", res)

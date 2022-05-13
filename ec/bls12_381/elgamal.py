@@ -38,24 +38,37 @@ def key_generator():
 # cipher text C1, C2
 # C1 <- rG1
 # C2 <- M + rPK
+# separate and encrypt each char
 def encrypt(message: str, PK: list):
-    M = message_to_point(message)
-    print("M: ", M[0])
+    M, C2 = list(), list()
+    for i in message:
+        M.append(message_to_point(i))
+    print("M", M)
+    
+    #M = message_to_point(message)
     r = rnd_scalar()
     C1 = multiply(G1, r)
-    C2 = add(M, multiply(PK, r))
+    #C2 = add(M, multiply(PK, r))
+    for i in M:
+        C2.append(add(i, multiply(PK, r)))
     print("C1: ", C1)
     print("C2: ", C2)
-    return [C1, C2]
+    return C1, C2
 
 
 # Decryption
 # M = C2 - xC1
 # m = M // 100
+# separate and decrypt each char
 def decrypt(sk: int, C1: list, C2: list) -> str:
-    M = add(C2, negative(multiply(C1, sk)))
-    m = normalize(M)[0] // 100
-    result = m.to_bytes((m.bit_length() + 7) // 8, "big").decode("utf-8")
+    M, m, r = list(), list(), list()
+    result = str()
+    for i in range(len(C2)):
+        M.append(add(C2[i], negative(multiply(C1, sk))))
+        m.append(normalize(M[i])[0] // 100)
+        r.append(m[i].to_bytes((m[i].bit_length() + 7) // 8, "big").decode("utf-8"))
+        result += r[i]
+    print("result", result)
     return result
 
 
@@ -66,7 +79,3 @@ def message_to_point(message: str) -> list:
         sqr_y = FE(x**3 + 4)
         if (pow(sqr_y, (fm - 1) // 2, fm) == 1):
             return [x, sqr_y, 1]
-
-
-
-# TODO: 文字列を１文字ずつEnc, Decするように変更
