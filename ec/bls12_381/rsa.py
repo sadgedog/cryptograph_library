@@ -4,24 +4,33 @@ import secrets
 
 # RSA Encryption
 
-def key_generator(i: int):
+def key_generator(bitlen: int):
     p = q = 0
-    while (p == q):
-        p, q = 6733, 9973
-        #p, q = 965411, 719167
+    p = rnd_scalar(bitlen)
+    q = rnd_scalar(bitlen)
+    while (not miller_rabin(p)):
+        p = rnd_scalar(bitlen)
+        if (miller_rabin(p)):
+            break
+
+    while (not miller_rabin(q)):
+        q = rnd_scalar(bitlen)
+        if (miller_rabin(q)):
+            break
+        
     n = p * q
     phi = math.lcm(p-1, q-1)
 
-    # TODO: 全探索以外のアルゴリズム
     for i in range(2, phi):
         if math.gcd(i, phi) == 1:
             e = i
             break
-        
-    for i in range(2, phi):
-        if (e * i) % phi == 1:
-            d = i
-            break
+
+    d = ext_gcd(e, phi)
+    # for i in range(2, phi):
+    #     if (e * i) % phi == 1:
+    #         d = i
+    #         break
     return [d, n], [e, n]
 
 
@@ -33,10 +42,7 @@ def encrypt(message: str, pk: list):
     enc_l = list()
     for i in range(len(message)):
         enc_l.append(int.from_bytes(message[i].encode("utf-8"), "big"))
-    #l = [ord(char) for char in message]
     
-    # m = int.from_bytes(message.encode("utf-8"), "big")
-    # print("m:", m)
     e = pk[0]
     n = pk[1]
     c = [pow(i, e, n) for i in enc_l]
@@ -47,7 +53,7 @@ def decrypt(sk: list, c: list):
     n = sk[1]
     # decrypt
     m = [pow(i, d, n) for i in c]
-    # decode 
+    # decode
     m = [i.to_bytes((i.bit_length() + 7) // 8, "big").decode("utf-8") for i in m]
     r = ""
     for i in range(len(m)):
@@ -73,7 +79,23 @@ def miller_rabin(p: int, k: int = 100) -> bool:
         while (t != p - 1 and y != 1 and y != p - 1):
             y = (y * y) % p
             t = t * 2
-            
         if (y != p - 1 and t & 1 == 0):
             return False
     return True
+
+# extended gcd
+# a * x + b * y = 1
+def ext_gcd(a, b):
+    h = b
+    x, y, u, v = 1, 0, 0, 1
+    while b:
+        k = a // b
+        x -= k * u
+        y -= k * v
+        x, u = u, x
+        y, v = v, y
+        a, b = b, a % b
+    x %= h
+    if x < 0:
+        x += h
+    return x

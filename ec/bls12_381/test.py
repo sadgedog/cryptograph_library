@@ -227,9 +227,10 @@ def main():
     while (cnt < 10):
         cnt += 1
         
-        sk, pk = rsa.key_generator(10)
+        sk, pk = rsa.key_generator(256)
         c = random.randint(10, 100)
         m = rnd_str(c)
+        print(m)
         c = rsa.encrypt(m, pk)
         res = rsa.decrypt(sk, c)
         if (m == res):
@@ -253,7 +254,8 @@ def main():
             print("not prime: ", n)
 
     print("Miller Rabin test: OK")
-            
+
+    
     print("ALL CONFIRMED")
 
 
