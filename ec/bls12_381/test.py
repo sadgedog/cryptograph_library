@@ -84,9 +84,7 @@ def rnd_str(n):
    randlst = [random.choice(string.ascii_letters + string.digits) for i in range(n)]
    return ''.join(randlst)
 
-
-# check calc result using py_ecc optimized bls12-381 library
-def main():
+def calc_test():
     # calculate tests
     cnt = 0
     while(cnt < 10):
@@ -95,9 +93,9 @@ def main():
         check(double_ref(opt.G1), "double", G1[0], G1[1], G1[2], G1[0], G1[1], G1[2], s)
         check(add_ref(opt.G1, opt.G1), "add", G1[0], G1[1], G1[2], G1[0], G1[1], G1[2], s)
         check(multiply_ref(opt.G1, s), "multiply", G1[0], G1[1], G1[2], G1[0], G1[1], G1[2], s)
-
     print("elliptic calc: OK")
-    
+
+def elliptic_lagrange_test():
     #############################################################################
     # 一般的なラグランジュ補間では, xy平面上のn次関数f(x)をf(x)上のn-1点から復元する.
     # n次関数f(x)を(x, f(x)*G1)と定義することで, 楕円曲線上でラグランジュ補間を行える.
@@ -125,17 +123,17 @@ def main():
         s18 = [8, multiply(G1, share[7])]
         s19 = [9, multiply(G1, share[8])]
         s110 = [10, multiply(G1, share[9])]
-
+        
         # k = 8
         ls = [s13, s12, s110, s14, s19, s17, s18, s15]
         # interpolate f(x = 1)
         RS = elliptic_lagrange(1, ls, "Z1")
         print(normalize(RS))
         print(normalize(s11[1]))
-
         if(normalize(RS) == normalize(s11[1])):
             print("elliptic lagrange test: OK")
 
+def on_curve_test():
     # 楕円曲線上のランダムな点が曲線状に存在するか確認
     cnt = 0
     while (cnt < 10):
@@ -146,9 +144,9 @@ def main():
         else:
             print("on curve test: NG")
             break
-
     print("on curve test: OK")
 
+def elgamal_test():
     # ElGamal on Elliptic Curve test
     # 楕円エルガマルのテスト(暗号化, 復号)
     cnt = 0
@@ -164,9 +162,9 @@ def main():
         else:
             print("ElGamal on EC test: NG")
             break
-
     print("ElGamal on EC test: OK")
 
+def ext_field_test():
     # Quadratic extension field test
     # 二次拡大体上での演算のテスト
     # double_G2
@@ -178,16 +176,14 @@ def main():
             ref = opt.double(opt.G2)
         else:
             result = double_G2(result)
-            ref = opt.double(ref)
-            
+            ref = opt.double(ref)      
         if (result == FQ2_to_list(ref)):
             print(result, "==>", ref)
         else:
             print("expected", ref, "\nbut got", result)
             break
-
     print("Doubling on quadratic extension field: OK")
-
+    
     # add_G2
     cnt = 0
     while (cnt < 10):
@@ -198,13 +194,11 @@ def main():
         else:
             result = add_G2(G2, result)
             ref = opt.add(opt.G2, ref)
-
         if (result == FQ2_to_list(ref)):
             print(result, "==>", ref)
         else:
             print("expected", ref, "\nbut got", result)
             break
-
     print("Add on quadratic extension field: OK")
 
     # multiply_G2
@@ -219,14 +213,12 @@ def main():
         else:
             print("expected", ref, "\nbut got", result)
             break
-
     print("Multiply on quadratic extension field: OK")
 
-    # rsa test
+def rsa_test():
     cnt = 0
     while (cnt < 10):
         cnt += 1
-        
         sk, pk = rsa.key_generator(256)
         c = random.randint(10, 100)
         m = rnd_str(c)
@@ -237,7 +229,9 @@ def main():
             print(m, "==>", res)
         else:
             print("expected", m, "\nbut got", res)
-
+    print("RSA test: OK")
+    
+def miller_rabin_test():
     # miller rabin test
     cnt = 0
     while (cnt < 10):
@@ -246,15 +240,24 @@ def main():
             n = rnd_scalar()
             b = rsa.miller_rabin(n, 100)
             if (b):
-                break
-            
+                break        
         if (sympy.isprime(n)):
             print("prime number: ", n)
         else:
             print("not prime: ", n)
-
     print("Miller Rabin test: OK")
 
+    
+    
+# check calc result using py_ecc optimized bls12-381 library
+def main():
+    calc_test()
+    elliptic_lagrange_test()
+    on_curve_test()
+    elgamal_test()
+    ext_field_test()
+    rsa_test()
+    miller_rabin_test()
     
     print("ALL CONFIRMED")
 
