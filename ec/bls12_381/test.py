@@ -2,6 +2,7 @@
 import random
 import string
 import secrets
+import sympy
 from py_ecc import optimized_bls12_381 as opt
 from bls12_381 import (
     add,
@@ -153,7 +154,7 @@ def main():
     cnt = 0
     while (cnt < 10):
         cnt += 1
-        c = random.randint(10, 20)
+        c = random.randint(10, 50)
         m = rnd_str(c)
         sk, PK = key_generator()
         C1, C2 = encrypt(m, PK)
@@ -235,6 +236,23 @@ def main():
             print(m, "==>", res)
         else:
             print("expected", m, "\nbut got", res)
+
+    # miller rabin test
+    cnt = 0
+    while (cnt < 10):
+        cnt += 1
+        while (True):
+            n = rnd_scalar()
+            b = rsa.miller_rabin(n, 100)
+            if (b):
+                break
+            
+        if (sympy.isprime(n)):
+            print("prime number: ", n)
+        else:
+            print("not prime: ", n)
+
+    print("Miller Rabin test: OK")
             
     print("ALL CONFIRMED")
 

@@ -1,4 +1,5 @@
 import math
+import random
 import secrets
 
 # RSA Encryption
@@ -29,16 +30,16 @@ def rnd_scalar(i: int):
 
 # separate and encrypt each char
 def encrypt(message: str, pk: list):
-    l = list()
+    enc_l = list()
     for i in range(len(message)):
-        l.append(int.from_bytes(message[i].encode("utf-8"), "big"))
+        enc_l.append(int.from_bytes(message[i].encode("utf-8"), "big"))
     #l = [ord(char) for char in message]
     
     # m = int.from_bytes(message.encode("utf-8"), "big")
     # print("m:", m)
     e = pk[0]
     n = pk[1]
-    c = [pow(i, e, n) for i in l]
+    c = [pow(i, e, n) for i in enc_l]
     return c
 
 def decrypt(sk: list, c: list):
@@ -54,6 +55,25 @@ def decrypt(sk: list, c: list):
     return r
 
 
-# TODO: miller_rabinの素数判定アルゴリズムでランダムな素数を作る
-def miller_rabin_rnd():
-    return 0
+def miller_rabin(p: int, k: int = 100) -> bool:
+    if (p == 1 or p & 1 == 0):
+        return False
+    elif (p == 2):
+        return True
+    
+    d = (p - 1) // 2
+    while (d & 1 == 0):
+        d = d // 2
+
+    for i in range(k):
+        a = random.randint(1, p - 1)
+        t = d
+        y = pow(a, t, p)
+        
+        while (t != p - 1 and y != 1 and y != p - 1):
+            y = (y * y) % p
+            t = t * 2
+            
+        if (y != p - 1 and t & 1 == 0):
+            return False
+    return True

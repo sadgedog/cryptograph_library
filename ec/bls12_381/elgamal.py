@@ -43,16 +43,13 @@ def encrypt(message: str, PK: list):
     M, C2 = list(), list()
     for i in message:
         M.append(message_to_point(i))
-    print("M", M)
-    
-    #M = message_to_point(message)
+
     r = rnd_scalar()
     C1 = multiply(G1, r)
-    #C2 = add(M, multiply(PK, r))
     for i in M:
         C2.append(add(i, multiply(PK, r)))
-    print("C1: ", C1)
-    print("C2: ", C2)
+    #print("C1: ", C1)
+    #print("C2: ", C2)
     return C1, C2
 
 
