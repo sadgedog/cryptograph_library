@@ -1,8 +1,12 @@
 # Homomorphic Encryption
 import rsa
 
-
-def he_rsa(m1: int, m2: int):
+# RSA is one of Homomorphic Encryption
+# m1, m2: message
+# c1, c2: encrypted m1, m2
+# C: c1 * c2
+# decrypted C equals m1 * m2
+def he_rsa(m1: int, m2: int) -> int:
     sk, pk = rsa.key_generator(256)
     m = m1 * m2
     # print("m1: ", m1)
@@ -17,3 +21,7 @@ def he_rsa(m1: int, m2: int):
     r2 = rsa.decrypt(sk, c2)
     r = r1 * r2
     return r
+
+
+def he_elgamal(m1: int, m2: int) -> int:
+    return 0

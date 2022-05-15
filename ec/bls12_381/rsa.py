@@ -4,7 +4,7 @@ import secrets
 
 # RSA Encryption
 
-def key_generator(bitlen: int):
+def key_generator(bitlen: int) -> list:
     p = q = 0
     p = rnd_scalar(bitlen)
     q = rnd_scalar(bitlen)
@@ -29,11 +29,11 @@ def key_generator(bitlen: int):
     return [d, n], [e, n]
 
 
-def rnd_scalar(i: int):
+def rnd_scalar(i: int) -> int:
     return secrets.randbits(i)
 
 # separate and encrypt each char
-def encrypt(message: str, pk: list):
+def encrypt(message: str or int, pk: list) -> list or int:
     # string
     if (type(message) == str):
         enc_l = list()
@@ -50,7 +50,7 @@ def encrypt(message: str, pk: list):
         
     return c
 
-def decrypt(sk: list, c: list):
+def decrypt(sk: list, c: list or int) -> str or int:
     d = sk[0]
     n = sk[1]
     # string
@@ -93,7 +93,7 @@ def miller_rabin(p: int, k: int = 100) -> bool:
 
 # extended gcd
 # a * x + b * y = 1
-def ext_gcd(a, b):
+def ext_gcd(a: int, b: int) -> int:
     h = b
     x, y, u, v = 1, 0, 0, 1
     while b:
