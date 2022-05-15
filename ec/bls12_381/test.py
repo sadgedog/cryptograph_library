@@ -38,6 +38,7 @@ from utils import (
 )
 
 import rsa
+import he
 
 # reference
 def double_ref(point):
@@ -219,6 +220,7 @@ def rsa_test():
     cnt = 0
     while (cnt < 10):
         cnt += 1
+        # 鍵生成 2048 bitで1分強
         sk, pk = rsa.key_generator(256)
         c = random.randint(10, 100)
         m = rnd_str(c)
@@ -238,7 +240,7 @@ def miller_rabin_test():
         cnt += 1
         while (True):
             n = rnd_scalar()
-            b = rsa.miller_rabin(n, 100)
+            b = rsa.miller_rabin(n, 50)
             if (b):
                 break        
         if (sympy.isprime(n)):
@@ -247,7 +249,23 @@ def miller_rabin_test():
             print("not prime: ", n)
     print("Miller Rabin test: OK")
 
-    
+# homomorphic encryption test
+def rsa_he_test():
+    cnt = 0
+    while (cnt < 10):
+        cnt += 1
+        m1 = rsa.rnd_scalar(128)
+        m2 = rsa.rnd_scalar(128)
+        print("m1: ", m1)
+        print("m2: ", m2)
+        print("m1 * m2: ", m1 * m2)
+        r = he.he_rsa(m1, m2)
+        if (m1 * m2 == r):
+            print(m1 * m2, "==>", r)
+        else:
+            print("expected", m1 * m2, "\nbut got", r)
+    print("RSA Homomorphic Encryption: OK")
+            
     
 # check calc result using py_ecc optimized bls12-381 library
 def main():
@@ -258,6 +276,7 @@ def main():
     ext_field_test()
     rsa_test()
     miller_rabin_test()
+    rsa_he_test()
     
     print("ALL CONFIRMED")
 

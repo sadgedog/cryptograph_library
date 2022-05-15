@@ -25,12 +25,7 @@ def key_generator(bitlen: int):
         if math.gcd(i, phi) == 1:
             e = i
             break
-
     d = ext_gcd(e, phi)
-    # for i in range(2, phi):
-    #     if (e * i) % phi == 1:
-    #         d = i
-    #         break
     return [d, n], [e, n]
 
 
@@ -39,25 +34,38 @@ def rnd_scalar(i: int):
 
 # separate and encrypt each char
 def encrypt(message: str, pk: list):
-    enc_l = list()
-    for i in range(len(message)):
-        enc_l.append(int.from_bytes(message[i].encode("utf-8"), "big"))
-    
-    e = pk[0]
-    n = pk[1]
-    c = [pow(i, e, n) for i in enc_l]
+    # string
+    if (type(message) == str):
+        enc_l = list()
+        for i in range(len(message)):
+            enc_l.append(int.from_bytes(message[i].encode("utf-8"), "big"))
+        e = pk[0]
+        n = pk[1]
+        c = [pow(i, e, n) for i in enc_l]
+    # integer
+    elif (type(message) == int):
+        e = pk[0]
+        n = pk[1]
+        c = pow(message, e, n)
+        
     return c
 
 def decrypt(sk: list, c: list):
     d = sk[0]
     n = sk[1]
-    # decrypt
-    m = [pow(i, d, n) for i in c]
-    # decode
-    m = [i.to_bytes((i.bit_length() + 7) // 8, "big").decode("utf-8") for i in m]
-    r = ""
-    for i in range(len(m)):
-        r += m[i]        
+    # string
+    if (type(c) == list):
+        # decrypt
+        m = [pow(i, d, n) for i in c]
+        # decode
+        m = [i.to_bytes((i.bit_length() + 7) // 8, "big").decode("utf-8") for i in m]
+        r = ""
+        for i in range(len(m)):
+            r += m[i]
+    # integer
+    elif (type(c) == int):
+        r = pow(c, d, n)
+        
     return r
 
 
