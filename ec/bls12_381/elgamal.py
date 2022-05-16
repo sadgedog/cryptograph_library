@@ -74,5 +74,5 @@ def message_to_point(message: str) -> list:
     for i in range(100):
         x = FE(m + i)
         sqr_y = FE(x**3 + 4)
-        if (pow(sqr_y, (fm - 1) // 2, fm) == 1):
+        if pow(sqr_y, (fm - 1) // 2, fm) == 1:
             return [x, sqr_y, 1]

@@ -88,7 +88,7 @@ def rnd_str(n):
 def calc_test():
     # calculate tests
     cnt = 0
-    while(cnt < 10):
+    while cnt < 10:
         cnt += 1
         s = rnd_scalar()
         check(double_ref(opt.G1), "double", G1[0], G1[1], G1[2], G1[0], G1[1], G1[2], s)
@@ -106,7 +106,7 @@ def elliptic_lagrange_test():
     # elliptic lagrange test
     # (scalar, elliptic point)
     cnt = 0
-    while (cnt < 10):
+    while cnt < 10:
         cnt += 1
         n = 10
         k = 8
@@ -137,7 +137,7 @@ def elliptic_lagrange_test():
 def on_curve_test():
     # 楕円曲線上のランダムな点が曲線状に存在するか確認
     cnt = 0
-    while (cnt < 10):
+    while cnt < 10:
         cnt += 1
         H1 = multiply(G1, rnd_scalar())
         if (on_curve(H1)):
@@ -151,7 +151,7 @@ def elgamal_test():
     # ElGamal on Elliptic Curve test
     # 楕円エルガマルのテスト(暗号化, 復号)
     cnt = 0
-    while (cnt < 10):
+    while cnt < 10:
         cnt += 1
         c = random.randint(10, 50)
         m = rnd_str(c)
@@ -170,7 +170,7 @@ def ext_field_test():
     # 二次拡大体上での演算のテスト
     # double_G2
     cnt = 0
-    while (cnt < 10):
+    while cnt < 10:
         cnt += 1
         if (cnt == 1):
             result = double_G2(G2)
@@ -187,7 +187,7 @@ def ext_field_test():
     
     # add_G2
     cnt = 0
-    while (cnt < 10):
+    while cnt < 10:
         cnt += 1
         if (cnt == 1):
             result = add_G2(G2, G2)
@@ -204,7 +204,7 @@ def ext_field_test():
 
     # multiply_G2
     cnt = 0
-    while (cnt < 10):
+    while cnt < 10:
         cnt += 1
         r = rnd_scalar()
         result = multiply_G2(G2, r)
@@ -218,7 +218,7 @@ def ext_field_test():
 
 def rsa_test():
     cnt = 0
-    while (cnt < 10):
+    while cnt < 10:
         cnt += 1
         # 鍵生成 2048 bitで1分強
         sk, pk = rsa.key_generator(256)
@@ -236,7 +236,7 @@ def rsa_test():
 def miller_rabin_test():
     # miller rabin test
     cnt = 0
-    while (cnt < 10):
+    while cnt < 10:
         cnt += 1
         while (True):
             n = rnd_scalar()
@@ -252,7 +252,7 @@ def miller_rabin_test():
 # homomorphic encryption test
 def rsa_he_test():
     cnt = 0
-    while (cnt < 10):
+    while cnt < 10:
         cnt += 1
         m1 = rsa.rnd_scalar(128)
         m2 = rsa.rnd_scalar(128)

@@ -19,9 +19,9 @@ def elliptic_lagrange(x: int, point: list, p: str) -> int:
     x_point = []
     y_point = []
     # Z1: additive identity element
-    if(p == "Z1"):
+    if p == "Z1":
         result = Z1
-    elif(p == "Z2"):
+    elif p == "Z2":
         result = Z2
     for i in range(len(point)):
         x_point.append(point[i][0])

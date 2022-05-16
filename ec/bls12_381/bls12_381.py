@@ -104,7 +104,7 @@ def normalize(point: list) -> list:
 # check point exists on curve
 def on_curve(point: list) -> bool:
     # affine coordinate
-    if (len(point) == 2):
+    if len(point) == 2:
         x, y = point
         return FE(y**2) == FE(x**3 + 4)
     # projective coordinate

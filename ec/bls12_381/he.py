@@ -23,5 +23,6 @@ def he_rsa(m1: int, m2: int) -> int:
     return r
 
 
+# HE for Elgamal on EC
 def he_elgamal(m1: int, m2: int) -> int:
     return 0
