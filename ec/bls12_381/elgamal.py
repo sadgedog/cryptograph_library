@@ -67,16 +67,16 @@ def encrypt(message: str, PK: list):
 def decrypt(sk: int, C1: list, C2: list) -> str:
     M, m, r = list(), list(), list()
     result = str()
-    if type(C1[0]) == list:
-        for i in range(len(C2)):
-            M.append(add(C2[i], negative(multiply(C1, sk))))
-            m.append(normalize(M[i])[0] // 100)
-            r.append(m[i].to_bytes((m[i].bit_length() + 7) // 8, "big").decode("utf-8"))
-            result += r[i]
-        print("result", result)
-    elif type(C1[0]) == int:
-        M = add(C2, negative(multiply(C1, sk)))
-        result = normalize(M)[0]
+#    if type(C1[0]) == list:
+    for i in range(len(C2)):
+        M.append(add(C2[i], negative(multiply(C1, sk))))
+        m.append(normalize(M[i])[0] // 100)
+        r.append(m[i].to_bytes((m[i].bit_length() + 7) // 8, "big").decode("utf-8"))
+        result += r[i]
+    print("result", result)
+    # elif type(C1[0]) == int:
+    #     M = add(C2, negative(multiply(C1, sk)))
+    #     result = normalize(M)[0]
     return result
 
 

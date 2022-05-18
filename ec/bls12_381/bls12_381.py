@@ -179,3 +179,11 @@ def multiply_G2(point: list, scalar: int):
         return multiply_G2(double_G2(point), scalar // 2)
     else:
         return add_G2(multiply_G2(double_G2(point), int(scalar // 2)), point)
+
+
+#######################################
+# pairing on Elliptic curve
+#######################################
+
+def pairing():
+    return 0

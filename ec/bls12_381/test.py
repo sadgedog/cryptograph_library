@@ -281,14 +281,14 @@ def elgamal_he_test():
 
 # check calc result using py_ecc optimized bls12-381 library
 def main():
-    # calc_test()
-    # elliptic_lagrange_test()
-    # on_curve_test()
+    calc_test()
+    elliptic_lagrange_test()
+    on_curve_test()
     elgamal_test()
-    # ext_field_test()
-    # rsa_test()
-    # miller_rabin_test()
-    # rsa_he_test()
+    ext_field_test()
+    rsa_test()
+    miller_rabin_test()
+    rsa_he_test()
     
     print("ALL CONFIRMED")
 
