@@ -33,6 +33,7 @@ def key_generator(bitlen: int) -> list:
 def rnd_scalar(i: int) -> int:
     return secrets.randbits(i)
 
+
 # separate and encrypt each char
 def encrypt(message: str or int, pk: list) -> list or int:
     # string
@@ -47,9 +48,9 @@ def encrypt(message: str or int, pk: list) -> list or int:
     elif type(message) == int:
         e = pk[0]
         n = pk[1]
-        c = pow(message, e, n)
-        
+        c = pow(message, e, n)        
     return c
+
 
 def decrypt(sk: list, c: list or int) -> str or int:
     d = sk[0]
@@ -66,7 +67,6 @@ def decrypt(sk: list, c: list or int) -> str or int:
     # integer
     elif type(c) == int:
         r = pow(c, d, n)
-        
     return r
 
 
@@ -79,7 +79,7 @@ def miller_rabin(p: int, k: int = 100) -> bool:
     d = (p - 1) // 2
     while d & 1 == 0:
         d = d // 2
-
+        
     for i in range(k):
         a = random.randint(1, p - 1)
         t = d
@@ -91,6 +91,7 @@ def miller_rabin(p: int, k: int = 100) -> bool:
         if y != p - 1 and t & 1 == 0:
             return False
     return True
+
 
 # extended gcd
 # a * x + b * y = 1

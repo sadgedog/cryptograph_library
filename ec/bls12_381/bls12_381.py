@@ -112,7 +112,7 @@ def on_curve(point: list) -> bool:
         X, Y, Z = point
         return FE(Y**2 * Z) == FE(X**3 + 4 * Z**3)
 
-
+    
 # [X : Y : Z] ==> [X : -Y : Z]
 def negative(point: list):
     X, Y, Z = point
@@ -168,7 +168,7 @@ def add_G2(point1: list, point2: list):
     new_Z = cmp_mul(V_cubed, W)
     return [new_X, new_Y, new_Z]
 
-    
+
 def multiply_G2(point: list, scalar: int):
     if scalar == 0:
         # Z2

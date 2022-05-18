@@ -1,6 +1,9 @@
 # Homomorphic Encryption
 import rsa
+import elgamal
+import bls12_381
 
+# RSA暗号は乗法準同型暗号の一つ
 # RSA is one of Homomorphic Encryption
 # m1, m2: message
 # c1, c2: encrypted m1, m2
@@ -22,7 +25,15 @@ def he_rsa(m1: int, m2: int) -> int:
     r = r1 * r2
     return r
 
-
+# 
 # HE for Elgamal on EC
+# TODO: This needs elliptic curve pairing!!
 def he_elgamal(m1: int, m2: int) -> int:
+    sk, pk = elgamal.key_generator()
+    print(m1)
+    print(m2)
+    m = m1 * m2
+    print(m)
+    c11, c12 = elgamal.encrypt(m1, pk)
+    c21, c22 = elgamal.encrypt(m2, pk)
     return 0

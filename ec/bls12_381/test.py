@@ -85,6 +85,7 @@ def rnd_str(n):
    randlst = [random.choice(string.ascii_letters + string.digits) for i in range(n)]
    return ''.join(randlst)
 
+
 def calc_test():
     # calculate tests
     cnt = 0
@@ -96,6 +97,7 @@ def calc_test():
         check(multiply_ref(opt.G1, s), "multiply", G1[0], G1[1], G1[2], G1[0], G1[1], G1[2], s)
     print("elliptic calc: OK")
 
+    
 def elliptic_lagrange_test():
     #############################################################################
     # 一般的なラグランジュ補間では, xy平面上のn次関数f(x)をf(x)上のn-1点から復元する.
@@ -134,6 +136,7 @@ def elliptic_lagrange_test():
         if(normalize(RS) == normalize(s11[1])):
             print("elliptic lagrange test: OK")
 
+            
 def on_curve_test():
     # 楕円曲線上のランダムな点が曲線状に存在するか確認
     cnt = 0
@@ -147,6 +150,7 @@ def on_curve_test():
             break
     print("on curve test: OK")
 
+    
 def elgamal_test():
     # ElGamal on Elliptic Curve test
     # 楕円エルガマルのテスト(暗号化, 復号)
@@ -165,6 +169,7 @@ def elgamal_test():
             break
     print("ElGamal on EC test: OK")
 
+    
 def ext_field_test():
     # Quadratic extension field test
     # 二次拡大体上での演算のテスト
@@ -216,6 +221,7 @@ def ext_field_test():
             break
     print("Multiply on quadratic extension field: OK")
 
+    
 def rsa_test():
     cnt = 0
     while cnt < 10:
@@ -232,6 +238,7 @@ def rsa_test():
         else:
             print("expected", m, "\nbut got", res)
     print("RSA test: OK")
+
     
 def miller_rabin_test():
     # miller rabin test
@@ -249,6 +256,7 @@ def miller_rabin_test():
             print("not prime: ", n)
     print("Miller Rabin test: OK")
 
+    
 # homomorphic encryption test
 def rsa_he_test():
     cnt = 0
@@ -266,17 +274,21 @@ def rsa_he_test():
             print("expected", m1 * m2, "\nbut got", r)
     print("RSA Homomorphic Encryption: OK")
             
-    
+
+def elgamal_he_test():
+    return 0
+
+
 # check calc result using py_ecc optimized bls12-381 library
 def main():
-    calc_test()
-    elliptic_lagrange_test()
-    on_curve_test()
+    # calc_test()
+    # elliptic_lagrange_test()
+    # on_curve_test()
     elgamal_test()
-    ext_field_test()
-    rsa_test()
-    miller_rabin_test()
-    rsa_he_test()
+    # ext_field_test()
+    # rsa_test()
+    # miller_rabin_test()
+    # rsa_he_test()
     
     print("ALL CONFIRMED")
 

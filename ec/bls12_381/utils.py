@@ -11,10 +11,12 @@ def time_cnt(func, p):
     func(p, p)
     e = time.perf_counter()
     print(e - s)
+
     
 # Field Element
 def FE(point_element: int) -> int:
     return point_element % fm
+
 
 def cmp_add(a, b):
     if type(a) == list and type(b) == list:
@@ -26,6 +28,7 @@ def cmp_add(a, b):
     else:
         exit(1)
 
+        
 def cmp_sub(a, b):
     if type(a) == list and type(b) == list:
         return [FE(a[0] - b[0]), FE(a[1] - b[1])]
@@ -36,6 +39,7 @@ def cmp_sub(a, b):
     else:
         exit(1)
 
+        
 def cmp_mul(a, b):
     if type(a) == list and type(b) == list:
         return [FE(a[0] * b[0] - a[1] * b[1]), FE(a[0] * b[1] + a[1] * b[0])]
@@ -46,6 +50,7 @@ def cmp_mul(a, b):
     else:
         exit(1)
 
+        
 def cmp_div(a, b):
     if type(a) == list and type(b) == list:
         r = FE(a[0] * b[0] + a[1] * b[1]) * pow(b[0]**2 + b[1]**2, -1, fm)

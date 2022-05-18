@@ -16,8 +16,7 @@ from bls12_381 import (
 
 # lagrange interpolation in elliptic curve
 def elliptic_lagrange(x: int, point: list, p: str) -> int:
-    x_point = []
-    y_point = []
+    x_point, y_point = list(), list()
     # Z1: additive identity element
     if p == "Z1":
         result = Z1
@@ -30,8 +29,7 @@ def elliptic_lagrange(x: int, point: list, p: str) -> int:
     for i in range(len(point)):
         elc = elliptic_lagrange_coef(x, i, len(x_point), x_point)
         mul = multiply(y_point[i], elc)
-        result = add(result, mul)
-        
+        result = add(result, mul)        
     return result
 
 
