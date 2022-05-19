@@ -257,7 +257,7 @@ def miller_rabin_test():
     print("Miller Rabin test: OK")
 
     
-# homomorphic encryption test
+# homomorphic encryption test for rsa
 def rsa_he_test():
     cnt = 0
     while cnt < 10:
@@ -273,10 +273,28 @@ def rsa_he_test():
         else:
             print("expected", m1 * m2, "\nbut got", r)
     print("RSA Homomorphic Encryption: OK")
-            
 
+    
+# homomorphic encryption test for ElGamal on EC
+# FixMe: 復号すると結果が1or2違う場合がある??
 def elgamal_he_test():
-    return 0
+    cnt = 0
+    while cnt < 10:
+        cnt += 1
+        m1 = secrets.randbits(128)
+        m2 = secrets.randbits(128)
+        print("m1: ", m1)
+        print("m2: ", m2)
+        print("m1 * m2: ", m1 * m2)
+        r = he.he_elgamal(m1, m2)
+        if (m1 * m2 == r):
+            print(m1 * m2, "==>", r)
+        else:
+            print("expected", m1 * m2, "\nbut got", r)
+            # 差が1か2でる時がある
+            print("sub", r - m1 * m2)
+            exit(1)
+    print("ElGamal Homomorphic Encryption: OK")
 
 
 # check calc result using py_ecc optimized bls12-381 library
@@ -289,7 +307,7 @@ def main():
     rsa_test()
     miller_rabin_test()
     rsa_he_test()
-    
+    elgamal_he_test()
     print("ALL CONFIRMED")
 
 

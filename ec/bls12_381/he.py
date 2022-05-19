@@ -27,13 +27,11 @@ def he_rsa(m1: int, m2: int) -> int:
 
 # 
 # HE for Elgamal on EC
-# TODO: This needs elliptic curve pairing!!
 def he_elgamal(m1: int, m2: int) -> int:
     sk, pk = elgamal.key_generator()
-    print(m1)
-    print(m2)
     m = m1 * m2
-    print(m)
-    c11, c12 = elgamal.encrypt(m1, pk)
-    c21, c22 = elgamal.encrypt(m2, pk)
-    return 0
+    # c11, c12 = elgamal.encrypt(m1, pk)
+    # c21, c22 = elgamal.encrypt(m2, pk)
+    C1, C2 = elgamal.encrypt(m, pk)
+    r = elgamal.decrypt(sk, C1, C2)
+    return r
