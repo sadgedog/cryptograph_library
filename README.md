@@ -1,3 +1,5 @@
-hobby cryptograph library for bls12-381 elliptic curve
+## ABOUT THIS
+This is hobby cryptograph library for bls12-381 elliptic curve
 
-you can run test: Make test
+## RUN
+you can run: Make test
