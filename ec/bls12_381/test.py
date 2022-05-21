@@ -237,6 +237,7 @@ def rsa_test():
             print(m, "==>", res)
         else:
             print("expected", m, "\nbut got", res)
+            exit(1)
     print("RSA test: OK")
 
     
@@ -254,6 +255,7 @@ def miller_rabin_test():
             print("prime number: ", n)
         else:
             print("not prime: ", n)
+            exit(1)
     print("Miller Rabin test: OK")
 
     
@@ -272,6 +274,7 @@ def rsa_he_test():
             print(m1 * m2, "==>", r)
         else:
             print("expected", m1 * m2, "\nbut got", r)
+            exit(1)
     print("RSA Homomorphic Encryption: OK")
 
     
@@ -281,8 +284,8 @@ def elgamal_he_test():
     cnt = 0
     while cnt < 10:
         cnt += 1
-        m1 = secrets.randbits(128)
-        m2 = secrets.randbits(128)
+        m1 = secrets.randbits(12)
+        m2 = secrets.randbits(12)
         print("m1: ", m1)
         print("m2: ", m2)
         print("m1 * m2: ", m1 * m2)

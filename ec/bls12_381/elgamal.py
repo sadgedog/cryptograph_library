@@ -41,20 +41,18 @@ def key_generator():
 # separate and encrypt each char
 def encrypt(message: str, PK: list):
     M, C2 = list(), list()
+    r = rnd_scalar()
+    C1 = multiply(G1, r)
     if type(message) == str:
         for i in message:
             M.append(message_to_point(i))
-    elif type(message) == int:
-        M = message_to_point(message)
-
-    r = rnd_scalar()
-    C1 = multiply(G1, r)
-    
-    if type(message) == str:
         for i in M:
             C2.append(add(i, multiply(PK, r)))
+
     elif type(message) == int:
+        M = message_to_point(message)
         C2 = add(M, multiply(PK, r))
+        
     #print("C1: ", C1)
     #print("C2: ", C2)
     return C1, C2
@@ -77,7 +75,7 @@ def decrypt(sk: int, C1: list, C2: list) -> str:
         #print("result", result)
     elif type(C2[0]) == int:
         M = add(C2, negative(multiply(C1, sk)))
-        result = normalize(M)[0]
+        result = normalize(M)[0] // 100
     return result
 
 
@@ -85,7 +83,7 @@ def message_to_point(message: str) -> list:
     if type(message) == str:
         m = int.from_bytes(message.encode("utf-8"), "big") * 100
     elif type(message) == int:
-        m = message
+        m = message * 100
         
     for i in range(100):
         x = FE(m + i)
