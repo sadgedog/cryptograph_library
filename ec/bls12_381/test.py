@@ -279,13 +279,12 @@ def rsa_he_test():
 
     
 # homomorphic encryption test for ElGamal on EC
-# FixMe: 復号すると結果が1or2違う場合がある??
 def elgamal_he_test():
     cnt = 0
     while cnt < 10:
         cnt += 1
-        m1 = secrets.randbits(12)
-        m2 = secrets.randbits(12)
+        m1 = secrets.randbits(128)
+        m2 = secrets.randbits(128)
         print("m1: ", m1)
         print("m2: ", m2)
         print("m1 * m2: ", m1 * m2)
@@ -294,7 +293,6 @@ def elgamal_he_test():
             print(m1 * m2, "==>", r)
         else:
             print("expected", m1 * m2, "\nbut got", r)
-            # 差が1か2でる時がある
             print("sub", r - m1 * m2)
             exit(1)
     print("ElGamal Homomorphic Encryption: OK")

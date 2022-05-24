@@ -48,13 +48,9 @@ def encrypt(message: str, PK: list):
             M.append(message_to_point(i))
         for i in M:
             C2.append(add(i, multiply(PK, r)))
-
     elif type(message) == int:
         M = message_to_point(message)
         C2 = add(M, multiply(PK, r))
-        
-    #print("C1: ", C1)
-    #print("C2: ", C2)
     return C1, C2
 
 
@@ -65,14 +61,12 @@ def encrypt(message: str, PK: list):
 def decrypt(sk: int, C1: list, C2: list) -> str:
     M, m, r = list(), list(), list()
     result = str()
-    
     if type(C2[0]) == list:
         for i in range(len(C2)):
             M.append(add(C2[i], negative(multiply(C1, sk))))
             m.append(normalize(M[i])[0] // 100)
             r.append(m[i].to_bytes((m[i].bit_length() + 7) // 8, "big").decode("utf-8"))
             result += r[i]
-        #print("result", result)
     elif type(C2[0]) == int:
         M = add(C2, negative(multiply(C1, sk)))
         result = normalize(M)[0] // 100
