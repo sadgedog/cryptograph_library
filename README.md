@@ -1,3 +1,8 @@
-hobby cryptograph library for bls12-381 elliptic curve
-
-you can run test: Make test
+## ABOUT THIS
+This is hobby cryptograph library include
+- Elliptic Curve(BLS12-381)
+- ElGamal Encryption on EC
+- RSA Encryption
+- Homomorphic Encryption (RSA, ElGamal)
+## RUN
+make test
