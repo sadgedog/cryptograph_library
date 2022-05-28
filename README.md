@@ -4,6 +4,6 @@ it includes
 - Elliptic Curve(BLS12-381)
 - ElGamal Encryption on EC
 - RSA Encryption
-- Homomorphic Encryption (RSA, ElGamal)
+- Homomorphic Encryption (RSA, ElGamal on EC)
 ## RUN
 make test
