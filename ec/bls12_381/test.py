@@ -38,7 +38,12 @@ from utils import (
 )
 
 import rsa
-import he
+
+from he import (
+    he_rsa,
+    he_elgamal,
+)
+
 
 # reference
 def double_ref(point):
@@ -269,7 +274,7 @@ def rsa_he_test():
         print("m1: ", m1)
         print("m2: ", m2)
         print("m1 * m2: ", m1 * m2)
-        r = he.he_rsa(m1, m2)
+        r = he_rsa(m1, m2)
         if (m1 * m2 == r):
             print(m1 * m2, "==>", r)
         else:
@@ -283,17 +288,19 @@ def elgamal_he_test():
     cnt = 0
     while cnt < 10:
         cnt += 1
-        m1 = secrets.randbits(128)
-        m2 = secrets.randbits(128)
+        # We need to limit the bit length of messages
+        # becase of ECDSA
+        m1 = secrets.randbits(12)
+        m2 = secrets.randbits(12)
         print("m1: ", m1)
         print("m2: ", m2)
-        print("m1 * m2: ", m1 * m2)
-        r = he.he_elgamal(m1, m2)
-        if (m1 * m2 == r):
-            print(m1 * m2, "==>", r)
+        print("m1 + m2: ", m1 + m2)
+        r = he_elgamal(m1, m2)
+        if (m1 + m2 == r):
+            print(m1 + m2, "==>", r)
         else:
-            print("expected", m1 * m2, "\nbut got", r)
-            print("sub", r - m1 * m2)
+            print("expected", m1 + m2, "\nbut got", r)
+            print("sub", r - m1 + m2)
             exit(1)
     print("ElGamal Homomorphic Encryption: OK")
 
