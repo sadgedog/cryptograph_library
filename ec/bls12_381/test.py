@@ -305,7 +305,7 @@ def elgamal_he_test():
     print("ElGamal Homomorphic Encryption: OK")
 
 
-# check calc result using py_ecc optimized bls12-381 library
+# check calc result compare with the result of py_ecc optimized bls12-381 library
 def main():
     calc_test()
     elliptic_lagrange_test()

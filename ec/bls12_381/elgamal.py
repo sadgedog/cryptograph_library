@@ -27,8 +27,6 @@ def key_generator():
     sk = rnd_scalar()
     # Public Key: PK = sk*G1
     PK = multiply(G1, sk)
-    # print("sk: ", sk)
-    # print("PK: ", PK)
     return sk, PK
 
 
@@ -71,7 +69,6 @@ def decrypt(sk: int, C1: list, C2: list) -> str:
     # integer
     elif type(C2[0]) == int:
         result = add(C2, negative(multiply(C1, sk)))
-        # result = normalize(M)[0] // 100
     return result
 
 

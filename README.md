@@ -6,7 +6,6 @@ it includes
 - RSA Encryption
 - Homomorphic Encryption (RSA, ElGamal on EC)
 
-output result in tmp.txt
-
 ## RUN
-make test
+make test\
+You can see the result of test in tmp.txt
