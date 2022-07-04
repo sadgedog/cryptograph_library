@@ -81,7 +81,7 @@ def check(expected, mode, i1, i2, i3, i4, i5, i6, s):
         else:
             print("expected", expected, "\nbut got", r)
 
-            
+
 def rnd_scalar():
     return secrets.randbelow(co)
 
@@ -102,7 +102,7 @@ def calc_test():
         check(multiply_ref(opt.G1, s), "multiply", G1[0], G1[1], G1[2], G1[0], G1[1], G1[2], s)
     print("elliptic calc: OK")
 
-    
+
 def elliptic_lagrange_test():
     #############################################################################
     # 一般的なラグランジュ補間では, xy平面上のn次関数f(x)をf(x)上のn-1点から復元する.
@@ -121,7 +121,7 @@ def elliptic_lagrange_test():
         share, pcoef = generate_share(rnd_scalar(), n, k)
         # want to interpolate s11
         s11 = [1, multiply(G1, share[0])]
-        
+
         s12 = [2, multiply(G1, share[1])]
         s13 = [3, multiply(G1, share[2])]
         s14 = [4, multiply(G1, share[3])]
@@ -131,7 +131,7 @@ def elliptic_lagrange_test():
         s18 = [8, multiply(G1, share[7])]
         s19 = [9, multiply(G1, share[8])]
         s110 = [10, multiply(G1, share[9])]
-        
+
         # k = 8
         ls = [s13, s12, s110, s14, s19, s17, s18, s15]
         # interpolate f(x = 1)
@@ -141,7 +141,7 @@ def elliptic_lagrange_test():
         if(normalize(RS) == normalize(s11[1])):
             print("elliptic lagrange test: OK")
 
-            
+
 def on_curve_test():
     # 楕円曲線上のランダムな点が曲線状に存在するか確認
     cnt = 0
@@ -155,7 +155,7 @@ def on_curve_test():
             break
     print("on curve test: OK")
 
-    
+
 def elgamal_test():
     # ElGamal on Elliptic Curve test
     # 楕円エルガマルのテスト(暗号化, 復号)
@@ -174,7 +174,7 @@ def elgamal_test():
             break
     print("ElGamal on EC test: OK")
 
-    
+
 def ext_field_test():
     # Quadratic extension field test
     # 二次拡大体上での演算のテスト
@@ -194,7 +194,7 @@ def ext_field_test():
             print("expected", ref, "\nbut got", result)
             break
     print("Doubling on quadratic extension field: OK")
-    
+
     # add_G2
     cnt = 0
     while cnt < 10:
@@ -226,7 +226,7 @@ def ext_field_test():
             break
     print("Multiply on quadratic extension field: OK")
 
-    
+
 def rsa_test():
     cnt = 0
     while cnt < 10:
@@ -245,7 +245,7 @@ def rsa_test():
             exit(1)
     print("RSA test: OK")
 
-    
+
 def miller_rabin_test():
     # miller rabin test
     cnt = 0
@@ -263,7 +263,7 @@ def miller_rabin_test():
             exit(1)
     print("Miller Rabin test: OK")
 
-    
+
 # homomorphic encryption test for rsa
 def rsa_he_test():
     cnt = 0
@@ -282,7 +282,7 @@ def rsa_he_test():
             exit(1)
     print("RSA Homomorphic Encryption: OK")
 
-    
+
 # homomorphic encryption test for ElGamal on EC
 def elgamal_he_test():
     cnt = 0

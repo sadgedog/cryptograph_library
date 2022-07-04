@@ -5,5 +5,8 @@ it includes
 - ElGamal Encryption on EC
 - RSA Encryption
 - Homomorphic Encryption (RSA, ElGamal on EC)
+
+output result in tmp.txt
+
 ## RUN
 make test

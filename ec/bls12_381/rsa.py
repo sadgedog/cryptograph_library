@@ -18,7 +18,7 @@ def key_generator(bitlen: int) -> list:
         q = rnd_scalar(bitlen)
         if miller_rabin(q):
             break
-        
+
     n = p * q
     phi = math.lcm(p-1, q-1)
 

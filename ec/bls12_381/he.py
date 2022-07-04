@@ -15,6 +15,7 @@ from default import (
     Z1,
     Z2,
 )
+
 # RSA暗号は乗法準同型暗号の一つ
 # RSA is one of Homomorphic Encryption
 # m1, m2: message
@@ -22,7 +23,7 @@ from default import (
 # C: c1 * c2
 # decrypted C equals m1 * m2
 def he_rsa(m1: int, m2: int) -> int:
-    sk, pk = rsa.key_generator(256)    
+    sk, pk = rsa.key_generator(256)
     c1 = rsa.encrypt(m1, pk)
     c2 = rsa.encrypt(m2, pk)
     C = c1 * c2
