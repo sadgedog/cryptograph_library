@@ -9,3 +9,7 @@ it includes
 ## RUN
 make test\
 You can see the result of test in tmp.txt
+
+- TEST
+
+![TEST_LOG](./docs/test_log.gif)
