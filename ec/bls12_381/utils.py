@@ -1,6 +1,5 @@
 # util functions
 import time
-
 from default import (
     fm,
 )
@@ -89,4 +88,4 @@ def FQ2_to_list(h2):
         else:
             x3 += a[2][i+1]
     h2 = [[int(x1), int(y1)], [int(x2), int(y2)],[int(x3), int(y3)]]
-    return h2    
+    return h2

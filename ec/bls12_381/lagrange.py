@@ -1,3 +1,4 @@
+from fractions import Fraction
 import sympy
 import secrets
 import hashlib
@@ -37,9 +38,8 @@ def elliptic_lagrange_coef(x: int, i: int, a: int, x_point: list) -> int:
     result = 1
     for j in range(a):
         if i != j:
-            result *= ((x - x_point[j]) % co) * sympy.mod_inverse((x_point[i] - x_point[j]) % co, co)
-            result %= co
-    return result
+            result *= Fraction(x - x_point[j], x_point[i] - x_point[j])
+    return int(result)
 
 
 def rnd_scalar():

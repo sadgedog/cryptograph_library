@@ -84,6 +84,8 @@ def multiply(point: list, scalar: int) -> list:
         return point
     elif not scalar % 2:
         return multiply(double(point), scalar // 2)
+    elif scalar < 0:
+        return add(multiply(double(point), int(scalar % co // 2)), point)
     else:
         return add(multiply(double(point), int(scalar // 2)), point)
 

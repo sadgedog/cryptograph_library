@@ -44,6 +44,9 @@ from he import (
     he_elgamal,
 )
 
+BLACK = "\033[0m"
+RED = "\033[031m"
+GREEN = "\033[032m"
 
 # reference
 def double_ref(point):
@@ -65,7 +68,7 @@ def check(expected, mode, i1, i2, i3, i4, i5, i6, s):
             print(expected, "\n=>", r)
             print("OK\n")
         else:
-            print("expected", expected, "\nbut got", r)
+            print(RED + "expected", expected, "\nbut got", r + BLACK)
     if (mode == "add"):
         r = add([i1, i2, i3], [i4, i5, i6])
         if (r == list(expected)):
@@ -93,6 +96,7 @@ def rnd_str(n):
 
 def calc_test():
     # calculate tests
+    print(GREEN + "Elliptic Curve Calculation TEST" + BLACK)
     cnt = 0
     while cnt < 10:
         cnt += 1
@@ -100,7 +104,7 @@ def calc_test():
         check(double_ref(opt.G1), "double", G1[0], G1[1], G1[2], G1[0], G1[1], G1[2], s)
         check(add_ref(opt.G1, opt.G1), "add", G1[0], G1[1], G1[2], G1[0], G1[1], G1[2], s)
         check(multiply_ref(opt.G1, s), "multiply", G1[0], G1[1], G1[2], G1[0], G1[1], G1[2], s)
-    print("elliptic calc: OK")
+    print(GREEN + "elliptic calc: OK" + BLACK)
 
 
 def elliptic_lagrange_test():
@@ -112,6 +116,7 @@ def elliptic_lagrange_test():
     # 簡単のため, 補間する楕円曲線上の点をs11とし, 閾値k = 8とする.
     # elliptic lagrange test
     # (scalar, elliptic point)
+    print(GREEN + "Elliptic Lagrange TEST" + BLACK)
     cnt = 0
     while cnt < 10:
         cnt += 1
@@ -139,11 +144,12 @@ def elliptic_lagrange_test():
         print(normalize(RS))
         print(normalize(s11[1]))
         if(normalize(RS) == normalize(s11[1])):
-            print("elliptic lagrange test: OK")
+            print(GREEN + "Elliptic Lagrange TEST: OK" + BLACK)
 
 
 def on_curve_test():
     # 楕円曲線上のランダムな点が曲線状に存在するか確認
+    print(GREEN + "On Curve TEST" + BLACK)
     cnt = 0
     while cnt < 10:
         cnt += 1
@@ -151,14 +157,15 @@ def on_curve_test():
         if (on_curve(H1)):
             print("True")
         else:
-            print("on curve test: NG")
+            print(RED + "On Curve TEST: NG" + BLACK)
             break
-    print("on curve test: OK")
+    print(GREEN + "On Curve TEST: OK" + BLACK)
 
 
 def elgamal_test():
     # ElGamal on Elliptic Curve test
     # 楕円エルガマルのテスト(暗号化, 復号)
+    print(GREEN + "ElGamal on EC TEST" + BLACK)
     cnt = 0
     while cnt < 10:
         cnt += 1
@@ -170,9 +177,9 @@ def elgamal_test():
         if (r == m):
             print(r, "==>", m)
         else:
-            print("ElGamal on EC test: NG")
+            print(RED + "ElGamal on EC TEST: NG" + BLACK)
             break
-    print("ElGamal on EC test: OK")
+    print(GREEN + "ElGamal on EC TEST: OK" + BLACK)
 
 
 def ext_field_test():
@@ -191,9 +198,9 @@ def ext_field_test():
         if (result == FQ2_to_list(ref)):
             print(result, "==>", ref)
         else:
-            print("expected", ref, "\nbut got", result)
+            print(RED + "expected", ref, "\nbut got", result + BLACK)
             break
-    print("Doubling on quadratic extension field: OK")
+    print(GREEN + "Doubling on quadratic extension field: OK" + BLACK)
 
     # add_G2
     cnt = 0
@@ -208,9 +215,9 @@ def ext_field_test():
         if (result == FQ2_to_list(ref)):
             print(result, "==>", ref)
         else:
-            print("expected", ref, "\nbut got", result)
+            print(RED + "expected", ref, "\nbut got", result + BLACK)
             break
-    print("Add on quadratic extension field: OK")
+    print(GREEN + "Add on quadratic extension field: OK" + BLACK)
 
     # multiply_G2
     cnt = 0
@@ -222,9 +229,9 @@ def ext_field_test():
         if (result == FQ2_to_list(ref)):
             print(result, "==>", ref)
         else:
-            print("expected", ref, "\nbut got", result)
+            print(RED + "expected", ref, "\nbut got", result + BLACK)
             break
-    print("Multiply on quadratic extension field: OK")
+    print(GREEN + "Multiply on quadratic extension field: OK" + BLACK)
 
 
 def rsa_test():
@@ -241,13 +248,14 @@ def rsa_test():
         if (m == res):
             print(m, "==>", res)
         else:
-            print("expected", m, "\nbut got", res)
+            print(RED + "expected", m, "\nbut got", res + BLACK)
             exit(1)
-    print("RSA test: OK")
+    print(GREEN + "RSA TEST: OK" + BLACK)
 
 
 def miller_rabin_test():
     # miller rabin test
+    print(GREEN + "Miller Rabin test: START" + BLACK)
     cnt = 0
     while cnt < 10:
         cnt += 1
@@ -261,11 +269,12 @@ def miller_rabin_test():
         else:
             print("not prime: ", n)
             exit(1)
-    print("Miller Rabin test: OK")
+    print(GREEN + "Miller Rabin test: OK" + BLACK)
 
 
 # homomorphic encryption test for rsa
 def rsa_he_test():
+    print(GREEN + "RSA Homomorphic Encryption TEST" + BLACK)
     cnt = 0
     while cnt < 10:
         cnt += 1
@@ -278,13 +287,14 @@ def rsa_he_test():
         if (m1 * m2 == r):
             print(m1 * m2, "==>", r)
         else:
-            print("expected", m1 * m2, "\nbut got", r)
+            print(RED + "expected", m1 * m2, "\nbut got", str(r) + BLACK)
             exit(1)
-    print("RSA Homomorphic Encryption: OK")
-
+    print(GREEN + "RSA Homomorphic Encryption: OK" + BLACK)
+    
 
 # homomorphic encryption test for ElGamal on EC
 def elgamal_he_test():
+    print(GREEN + "ElGamal Homomorphic TEST" + BLACK)
     cnt = 0
     while cnt < 10:
         cnt += 1
@@ -299,12 +309,12 @@ def elgamal_he_test():
         if (m1 + m2 == r):
             print(m1 + m2, "==>", r)
         else:
-            print("expected", m1 + m2, "\nbut got", r)
+            print(RED + "expected", m1 + m2, "\nbut got", str(r) + BLACK)
             print("sub", r - m1 + m2)
             exit(1)
-    print("ElGamal Homomorphic Encryption: OK")
+    print(GREEN + "ElGamal Homomorphic Encryption: OK" + BLACK)
 
-
+    
 # check calc result compare with the result of py_ecc optimized bls12-381 library
 def main():
     calc_test()
@@ -316,7 +326,8 @@ def main():
     miller_rabin_test()
     rsa_he_test()
     elgamal_he_test()
-    print("ALL CONFIRMED")
+    
+    print(GREEN + "ALL CONFIRMED" + BLACK)
 
 
 if __name__ == "__main__":
