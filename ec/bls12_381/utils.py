@@ -1,7 +1,13 @@
 # util functions
 import time
+import secrets
 from default import (
     fm,
+    co,
+    G1,
+    G2,
+    Z1,
+    Z2,
 )
 
 # time counter 
@@ -11,6 +17,8 @@ def time_cnt(func, p):
     e = time.perf_counter()
     print(e - s)
 
+def rnd_scalar():
+    return secrets.randbelow(co)
     
 # Field Element
 def FE(point_element: int) -> int:
