@@ -1,8 +1,8 @@
 #!/bin/bash
 
 test() {
-    python3 test.py
-    #py -3 test.py
+    python3 -B test.py
+    #py -3 -B test.py
 }
 
 test

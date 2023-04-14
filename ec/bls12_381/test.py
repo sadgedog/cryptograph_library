@@ -44,6 +44,11 @@ from he import (
     he_elgamal,
 )
 
+from zk_proof import (
+    zk_proof,
+    verify_zk_proof,
+)
+
 BLACK = "\033[0m"
 RED = "\033[031m"
 GREEN = "\033[032m"
@@ -314,6 +319,24 @@ def elgamal_he_test():
             exit(1)
     print(GREEN + "ElGamal Homomorphic Encryption: OK" + BLACK)
 
+
+# zero knowledge proof test on EC
+def zk_proof_test():
+    print(GREEN + "Zero Knowledge Proof TEST" + BLACK)
+    cnt = 0
+    while cnt < 10:
+        cnt += 1
+        message = rnd_scalar()
+        point_G1 = multiply(G1, message)
+        challenge, response = zk_proof(message, point_G1)
+        c_v, r_v = verify_zk_proof(point_G1, challenge, response)
+        if c_v == r_v:
+            print("challenge: ", challenge, "==>", c_v)
+        else:
+            print("expected ", challenge, "\nbut got", c_v)
+            exit(1)
+    print(GREEN + "Zero Knowledge Proof TEST: OK" + BLACK)
+
     
 # check calc result compare with the result of py_ecc optimized bls12-381 library
 def main():
@@ -326,6 +349,7 @@ def main():
     miller_rabin_test()
     rsa_he_test()
     elgamal_he_test()
+    zk_proof_test()
     
     print(GREEN + "ALL CONFIRMED" + BLACK)
 

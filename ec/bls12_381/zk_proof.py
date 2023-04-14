@@ -20,7 +20,6 @@ from bls12_381 import (
 def zk_proof(message: int, G1_point: list) -> list:
     w = rnd_scalar()
     T = multiply(G1, w)
-    # TODO: CHECK THIS(reason normalize T)
     T = normalize(T)
     value = G1 + G1_point + T
     tmp = 0
@@ -49,4 +48,4 @@ def verify_zk_proof(G1_point, c, r) -> bool:
     verified_challenge = hashlib.sha256(tmp).hexdigest()
     verified_challenge = int(verified_challenge, 16)
 
-    return c == verified_challenge
+    return [c, verified_challenge]
