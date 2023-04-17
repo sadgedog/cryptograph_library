@@ -4,10 +4,12 @@ it includes
 - Elliptic Curve(BLS12-381)
 - ElGamal Encryption on EC
 - RSA Encryption
+- Lagrange Interpolation on Elliptic Curve(BLS12-381)
 - Homomorphic Encryption (RSA, ElGamal on EC)
+- zk-proof on Elliptic Curve(BLS12-381)
 
 ## RUN
-make test\
+test.sh\
 You can see the result of test in tmp.txt
 
 - TEST
