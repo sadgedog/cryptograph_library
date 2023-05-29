@@ -22,18 +22,18 @@ from utils import (
 # Elliptic curve doubling
 # using affine coordinates
 # affine coordinates is slower than projective coordinates
-def double_p(pt):
+def double_p(pt: list[int, int]) -> list[int, int]:
     x, y = pt
     m = 3 * x**2 / (2 * y)
     new_x = m**2 - 2 * x
     new_y = -m * new_x + m * x - y
-    return (new_x, new_y)
+    return [new_x, new_y]
 
 
 # double in projective coordinates
 # P = [X : Y : Z]
 # 2P = [new_X : new_Y : new_Z]
-def double(point):
+def double(point: list[int, int, int]) -> list[int, int, int]:
     X, Y, Z = point
     W = 3 * X ** 2
     S = Y * Z
@@ -49,7 +49,7 @@ def double(point):
 # P = [X1 : Y1 : Z1]
 # Q = [X2 : Y2 : Z2]
 # R = P + Q = [new_X : new_Y : new_Z]
-def add(point1, point2) -> int:
+def add(point1: list[int, int, int], point2: list[int, int, int]) -> list[int, int, int]:
     if point1[2] == 0 or point2[2] == 0:
         return point1 if point2[2] == 0 else point2
     X_1, Y_1, Z_1 = point1
@@ -76,7 +76,7 @@ def add(point1, point2) -> int:
 
 
 # multiply in projective coordinates
-def multiply(point: list, scalar: int) -> list:
+def multiply(point: list[int, int, int], scalar: int) -> list[int, int, int]:
     if scalar == 0:
         # Z1
         return [1, 1, 0]
@@ -98,7 +98,7 @@ def FE(point_element: int) -> int:
 # nomalizer
 # projective coordinates -> affine coordinates
 # [X : Y : Z] -> [x, y]
-def normalize(point: list) -> list:
+def normalize(point: list[int, int, int]) -> list[int, int, int]:
     X, Y, Z = point
     return [FE(X * pow(Z, -1, fm)), FE(Y * pow(Z, -1, fm))]
 
@@ -116,18 +116,17 @@ def on_curve(point: list) -> bool:
 
     
 # [X : Y : Z] ==> [X : -Y : Z]
-def negative(point: list):
+def negative(point: list[int, int, int]) -> list[int, int, int]:
     X, Y, Z = point
     return [X, -Y, Z]
 
 
 #######################################
-# 拡大体の導入のテスト
 # 二次拡大体では複素数平面と同様に演算を定義する
 #######################################
 
 # double for Quadratic extension field
-def double_G2(point: list):
+def double_G2(point: list[int, int, int]) -> list[int, int, int]:
     x = point[0]
     y = point[1]
     z = point[2]
@@ -142,9 +141,14 @@ def double_G2(point: list):
     return [new_X, new_Y, new_Z]
 
 
-def add_G2(point1: list, point2: list):
+def add_G2(point1: list[list[int, int], list[int, int], list[int, int]],
+           point2: list[list[int, int], list[int, int], list[int, int]]) -> list[list[int, int], list[int, int], list[int, int]]:
     if point1[2] == 0 or point2[2] == 0:
-        return point1 if point2[2] == 0 else point2
+        if point2[2] == 0:
+            return point1
+        else:
+            return point2
+    
     X_1, Y_1, Z_1 = point1[0], point1[1], point1[2]
     X_2, Y_2, Z_2 = point2[0], point2[1], point2[2]
     U1 = cmp_mul(Y_2, Z_1)
@@ -171,7 +175,8 @@ def add_G2(point1: list, point2: list):
     return [new_X, new_Y, new_Z]
 
 
-def multiply_G2(point: list, scalar: int):
+def multiply_G2(point: list[list[int, int], list[int, int], list[int, int]],
+                scalar: int) -> list[list[int, int], list[int, int], list[int, int]]:
     if scalar == 0:
         # Z2
         return [[1, 0], [1, 0], [0, 0]]

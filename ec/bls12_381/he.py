@@ -51,6 +51,10 @@ def he_elgamal(m1: int, m2: int) -> int:
             break
 
 
+def pailler():
+    pass
+
+
 #####################################
 ## this is a test for lifted elgamal
 #####################################

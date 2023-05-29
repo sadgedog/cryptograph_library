@@ -1,3 +1,4 @@
+import sys
 import hashlib
 from utils import (
     rnd_scalar,

@@ -11,13 +11,13 @@ from default import (
 )
 
 # time counter 
-def time_cnt(func, p):
+def time_cnt(func, p) -> int:
     s = time.perf_counter()
     func(p, p)
     e = time.perf_counter()
     print(e - s)
 
-def rnd_scalar():
+def rnd_scalar() -> int:
     return secrets.randbelow(co)
     
 # Field Element
@@ -25,7 +25,7 @@ def FE(point_element: int) -> int:
     return point_element % fm
 
 
-def cmp_add(a, b):
+def cmp_add(a: int or list[int, int], b: int or list[int, int]) -> list[int, int]:
     if type(a) == list and type(b) == list:
         return [FE(a[0] + b[0]), FE(a[1] + b[1])]
     elif type(a) == int and type(b) == list:
@@ -36,7 +36,7 @@ def cmp_add(a, b):
         exit(1)
 
         
-def cmp_sub(a, b):
+def cmp_sub(a: int or list[int, int], b: int or list[int, int]) -> list[int, int]:
     if type(a) == list and type(b) == list:
         return [FE(a[0] - b[0]), FE(a[1] - b[1])]
     elif type(a) == int and type(b) == list:
@@ -47,7 +47,7 @@ def cmp_sub(a, b):
         exit(1)
 
         
-def cmp_mul(a, b):
+def cmp_mul(a: int or list[int, int], b: int or list[int, int]) -> list[int, int]:
     if type(a) == list and type(b) == list:
         return [FE(a[0] * b[0] - a[1] * b[1]), FE(a[0] * b[1] + a[1] * b[0])]
     elif type(a) == int and type(b) == list:
@@ -58,7 +58,7 @@ def cmp_mul(a, b):
         exit(1)
 
         
-def cmp_div(a, b):
+def cmp_div(a: int or list[int, int], b: int or list[int, int]) -> list[int, int]:
     if type(a) == list and type(b) == list:
         r = FE(a[0] * b[0] + a[1] * b[1]) * pow(b[0]**2 + b[1]**2, -1, fm)
         c = FE(a[1] * b[0] + a[0] * b[1]) * pow(b[0]**2 + b[1]**2, -1, fm)
@@ -72,7 +72,7 @@ def cmp_div(a, b):
 
 
 # FQ2では拡大体の要素が取り出せないので、strキャストして無理やり変換しています
-def FQ2_to_list(h2):
+def FQ2_to_list(h2) -> list[list[int, int], list[int, int], list[int, int]]:
     a = list(map(str, h2))
     x1, y1 = "", ""
     x2, y2 = "", ""

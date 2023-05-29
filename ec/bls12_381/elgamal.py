@@ -18,16 +18,16 @@ from bls12_381 import (
 
 # ElGamal on Elliptic Curve
 
-def rnd_scalar():
+def rnd_scalar() -> int:
     return secrets.randbelow(co)
 
 
-def key_generator():
+def key_generator() -> list[int, int]:
     # secret key: sk = random
     sk = rnd_scalar()
     # Public Key: PK = sk*G1
     PK = multiply(G1, sk)
-    return sk, PK
+    return [sk, PK]
 
 
 # Encryption:
@@ -37,7 +37,7 @@ def key_generator():
 # C1 <- rG1
 # C2 <- M + rPK
 # separate and encrypt each char
-def encrypt(message: str, PK: list):
+def encrypt(message: str, PK: list) -> list[int, int]:
     M, C2 = list(), list()
     r = rnd_scalar()
     C1 = multiply(G1, r)
@@ -49,14 +49,14 @@ def encrypt(message: str, PK: list):
     elif type(message) == int:
         M = message_to_point(message)
         C2 = add(M, multiply(PK, r))
-    return C1, C2
+    return [C1, C2]
 
 
 # Decryption
 # M = C2 - sk * C1
 # m = M // 100
 # separate and decrypt each char
-def decrypt(sk: int, C1: list, C2: list) -> str:
+def decrypt(sk: int, C1: list[int, int, int], C2: list[int, int, int]) -> str:
     M, m, r = list(), list(), list()
     result = str()
     # string

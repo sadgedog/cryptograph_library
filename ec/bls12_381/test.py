@@ -1,4 +1,5 @@
 # test calc for bls12-381 elliptic curve
+import sys
 import random
 import string
 import secrets

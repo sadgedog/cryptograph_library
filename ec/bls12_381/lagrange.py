@@ -42,18 +42,18 @@ def elliptic_lagrange_coef(x: int, i: int, a: int, x_point: list) -> int:
     return int(result)
 
 
-def rnd_scalar():
+def rnd_scalar() -> int:
     return secrets.randbelow(co)
 
 
-def hash_to_scalar(msg):
+def hash_to_scalar(msg) -> int:
     return (
         int.from_bytes(hashlib.sha3_256(str(msg).encode()).digest(), "big")
         % co
     )
 
 
-def generate_share(secret: int, n: int, t: int):
+def generate_share(secret: int, n: int, t: int) -> list[list, list]:
     coefficients = [secret] + [hash_to_scalar(f"vss:coefficient:{secret}:{j}") for j in range(1, t)]
 
     def f(x):
@@ -62,4 +62,4 @@ def generate_share(secret: int, n: int, t: int):
     
     shares = [f(id) for id in range(1, n + 1)]
     public_coefficients = [multiply(G1, coef) for coef in coefficients]
-    return shares, public_coefficients
+    return [shares, public_coefficients]
