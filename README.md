@@ -4,8 +4,9 @@ it includes
 - Elliptic Curve(BLS12-381)
 - ElGamal Encryption on EC
 - RSA Encryption
+- Paillier Cryptosystem
 - Lagrange Interpolation on Elliptic Curve(BLS12-381)
-- Homomorphic Encryption (RSA, ElGamal on EC)
+- Homomorphic Encryption (RSA, ElGamal over EC, Paillier cryptosystem)
 - zk-proof on Elliptic Curve(BLS12-381)
 
 ## RUN
