@@ -43,12 +43,16 @@ import rsa
 from he import (
     he_rsa,
     he_elgamal,
+    he_paillier,
 )
 
 from zk_proof import (
     zk_proof,
     verify_zk_proof,
 )
+
+import paillier
+
 
 BLACK = "\033[0m"
 RED = "\033[031m"
@@ -278,6 +282,24 @@ def miller_rabin_test():
     print(GREEN + "Miller Rabin test: OK" + BLACK)
 
 
+def paillier_test():
+    print(GREEN + "Paillier test: START" + BLACK)
+    cnt = 0
+    while cnt < 10:
+        cnt += 1
+        [[r, u], [g, n]] = paillier.key_generator()
+        m = rnd_scalar()
+        print("m: ", m)
+        c = paillier.encrypt(m, [g, n])
+        r = paillier.decrypt(c, [g, n], [r, u])
+        if r == m:
+            print(m, "==>", r)
+        else:
+            print(RED + "expected", m, "\nbut got", str(r) + BLACK)
+            exit(1)
+    print(GREEN + "Paillier Encryption: OK" + BLACK)
+                
+
 # homomorphic encryption test for rsa
 def rsa_he_test():
     print(GREEN + "RSA Homomorphic Encryption TEST" + BLACK)
@@ -321,6 +343,28 @@ def elgamal_he_test():
     print(GREEN + "ElGamal Homomorphic Encryption: OK" + BLACK)
 
 
+# homomorphic encryption test for Paillier Encryption
+# dec(enc(c1) * enc(c2)) -> c1 + c2
+def paillier_he_test():
+    print(GREEN + "Paillier Homomorphic TEST" + BLACK)
+    cnt = 0
+    while cnt < 10:
+        cnt += 1
+        m1 = paillier.rnd_scalar(100000)
+        m2 = paillier.rnd_scalar(100000)
+        print("m1: ", m1)
+        print("m2: ", m2)
+        print("m1 + m2: ", m1 + m2)
+        r = he_paillier(m1, m2)
+        if (m1 + m2 == r):
+            print(m1 + m2, "==>", r)
+        else:
+            print(RED + "expected", m1 + m2, "\nbut got", str(r) + BLACK)
+            print("sub", r - m1 + m2)
+            exit(1)
+    print(GREEN + "Paillier Homomorphic Encryption: OK" + BLACK)
+
+
 # zero knowledge proof test on EC
 def zk_proof_test():
     print(GREEN + "Zero Knowledge Proof TEST" + BLACK)
@@ -348,8 +392,10 @@ def main():
     ext_field_test()
     rsa_test()
     miller_rabin_test()
+    paillier_test()
     rsa_he_test()
     elgamal_he_test()
+    paillier_he_test()
     zk_proof_test()
     
     print(GREEN + "ALL CONFIRMED" + BLACK)

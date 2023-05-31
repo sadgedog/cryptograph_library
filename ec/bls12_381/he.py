@@ -1,6 +1,7 @@
 # Homomorphic Encryption
 import rsa
 import elgamal
+import paillier
 from bls12_381 import (
     add,
     multiply,
@@ -51,8 +52,14 @@ def he_elgamal(m1: int, m2: int) -> int:
             break
 
 
-def pailler():
-    pass
+def he_paillier(m1: int, m2: int) -> int:
+    sk, pk = paillier.key_generator()
+    c1 = paillier.encrypt(m1, pk)
+    c2 = paillier.encrypt(m2, pk)
+    # Enc(c1) * Enc(c2)
+    c = c1 * c2
+    r = paillier.decrypt(c, pk, sk)
+    return r
 
 
 #####################################

@@ -108,4 +108,4 @@ def ext_gcd(a: int, b: int) -> int:
     x %= h
     if x < 0:
         x += h
-    return a, v, y
+    return x
