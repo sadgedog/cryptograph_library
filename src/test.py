@@ -394,10 +394,10 @@ def tlwe_test():
     sigma = 2 ** (-15)
     # p : OK?
     p = 1024
-    while cnt < 100:
-        cnt += 1
-        r = -1 * (secrets.randbelow(10) + 2)
-        mu = 2 ** r
+    itr = 0
+    while itr < p / 2:
+        # plain text must be in [-p/2, p/2)
+        mu = itr / p
         sk = tlwe.key_generator(n)
         c = tlwe.tlwe_encrypt(sk, mu, sigma)
         res = tlwe.tlwe_decrypt(sk, c, p)
@@ -406,6 +406,7 @@ def tlwe_test():
         else:
             print("expected ", mu, "\nbut got", res)
             exit(1)
+        itr += 1
     print(GREEN + "TLWE TEST: OK" + BLACK)
 
     
