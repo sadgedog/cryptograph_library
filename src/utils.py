@@ -99,6 +99,11 @@ def FQ2_to_list(h2) -> list[list[int, int], list[int, int], list[int, int]]:
     return h2
 
 
+
+#
+# for TLWE       
+#
+
 #  ⌊x⌉ : xに最も近い整数値にラウンド
 def scaling(x: float) -> int:
     return round(x)

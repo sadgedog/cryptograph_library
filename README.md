@@ -8,9 +8,11 @@ it includes
 - Lagrange Interpolation on Elliptic Curve(BLS12-381)
 - Homomorphic Encryption (RSA, ElGamal over EC, Paillier cryptosystem)
 - zk-proof on Elliptic Curve(BLS12-381)
+- TLWE(LWE encryption over torus)
 
 ## RUN
-test.sh\
+python3 test.py
+
 You can see the result of test in tmp.txt
 
 - TEST
