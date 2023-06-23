@@ -97,3 +97,8 @@ def FQ2_to_list(h2) -> list[list[int, int], list[int, int], list[int, int]]:
             x3 += a[2][i+1]
     h2 = [[int(x1), int(y1)], [int(x2), int(y2)],[int(x3), int(y3)]]
     return h2
+
+
+#  ⌊x⌉ : xに最も近い整数値にラウンド
+def scaling(x: float) -> int:
+    return round(x)

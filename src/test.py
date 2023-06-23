@@ -53,6 +53,8 @@ from zk_proof import (
 
 import paillier
 
+import tlwe
+
 
 BLACK = "\033[0m"
 RED = "\033[031m"
@@ -382,6 +384,30 @@ def zk_proof_test():
             exit(1)
     print(GREEN + "Zero Knowledge Proof TEST: OK" + BLACK)
 
+
+def tlwe_test():
+    print(GREEN + "TLWE TEST" + BLACK)
+    cnt = 0
+    
+    # security parameter for 128bits security strength
+    n = 630
+    sigma = 2 ** (-15)
+    # p : OK?
+    p = 1024
+    while cnt < 100:
+        cnt += 1
+        r = -1 * (secrets.randbelow(10) + 2)
+        mu = 2 ** r
+        sk = tlwe.key_generator(n)
+        c = tlwe.tlwe_encrypt(sk, mu, sigma)
+        res = tlwe.tlwe_decrypt(sk, c, p)
+        if res == mu:
+            print(res, "==>", mu)
+        else:
+            print("expected ", mu, "\nbut got", res)
+            exit(1)
+    print(GREEN + "TLWE TEST: OK" + BLACK)
+
     
 # check calc result compare with the result of py_ecc optimized bls12-381 library
 def main():
@@ -397,6 +423,7 @@ def main():
     elgamal_he_test()
     paillier_he_test()
     zk_proof_test()
+    tlwe_test()
     
     print(GREEN + "ALL CONFIRMED" + BLACK)
 
