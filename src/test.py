@@ -396,8 +396,8 @@ def tlwe_test():
     # p : OK?
     p = 2 ** 10
     itr = 0
-    while itr < p / 2:
-        # plain text must be in [-p/2, p/2)
+    while itr < p:
+        # plain text must be in [0, p)
         mu = itr / p
         sk = tlwe.key_generator(n)
         c = tlwe.tlwe_encrypt(sk, mu, sigma)
@@ -422,7 +422,7 @@ def tlwe_he_test():
     itr = 0
     while (itr < 50):
         upper = int(p / 4)
-        # P in {0, 1/p, ..., p-1/p} ...???
+        # P in {0, 1/p, ..., p-1/p}
         mu1 = secrets.randbelow(upper) / p
         mu2 = secrets.randbelow(upper) / p
         sk = tlwe.key_generator(n)

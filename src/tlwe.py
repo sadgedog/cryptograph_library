@@ -25,11 +25,11 @@ def modulo_gaussian(mu: float, sigma: float, size: int = 1) -> float:
 
 
 # a = N(mu, sigma)
-# b = sigma(s_j * a_j) + e + mu
+# b = sum(s_j * a_j) + e + mu
 # c = (a, b)
 def tlwe_encrypt(sk: np.array, mu: float, sigma: float) -> np.array:
     a = np.array([rnd_torus(64) for _ in range(len(sk))], dtype=np.float64)
-    b = np.dot(a, sk) + modulo_gaussian(mu, sigma, 1)[0] + mu
+    b = np.dot(a, sk) +  modulo_gaussian(0, sigma, 1)[0] + mu
     c = np.append(a, b)
     return c
 
@@ -39,5 +39,5 @@ def tlwe_decrypt(sk: np.array, c: np.array, p: int) -> float:
     b = c[-1]
     a = c[0:-1]
     mu_aster = b - np.dot(sk, a)
-    mu = (scaling(p * mu_aster) % p) / (p * 2)
+    mu = (scaling(p * mu_aster) % p) / p
     return mu
