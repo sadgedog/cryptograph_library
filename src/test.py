@@ -54,6 +54,7 @@ from zk_proof import (
 import paillier
 
 import tlwe
+import torus
 
 
 BLACK = "\033[0m"
@@ -393,7 +394,7 @@ def tlwe_test():
     n = 630
     sigma = 2 ** (-15)
     # p : OK?
-    p = 1024
+    p = 2 ** 10
     itr = 0
     while itr < p / 2:
         # plain text must be in [-p/2, p/2)
@@ -409,8 +410,37 @@ def tlwe_test():
         itr += 1
     print(GREEN + "TLWE TEST: OK" + BLACK)
 
+def tlwe_he_test():
+    print(GREEN + "TLWE Homomorphic TEST" + BLACK)
+    cnt = 0
     
-# check calc result compare with the result of py_ecc optimized bls12-381 library
+    # security parameter for 128bits security strength
+    n = 630
+    sigma = 2 ** (-15)
+    # p : OK?
+    p = 2 ** 10
+    itr = 0
+    while (itr < 50):
+        upper = int(p / 4)
+        # P in {0, 1/p, ..., p-1/p} ...???
+        mu1 = secrets.randbelow(upper) / p
+        mu2 = secrets.randbelow(upper) / p
+        sk = tlwe.key_generator(n)
+        c1 = tlwe.tlwe_encrypt(sk, mu1, sigma)
+        c2 = tlwe.tlwe_encrypt(sk, mu2, sigma)
+        C = c1 + c2
+        Dec = tlwe.tlwe_decrypt(sk, C, p)
+        if (mu1 + mu2) % 1 == Dec:
+            print(Dec, "==>", mu1 + mu2)
+        else:
+            print("expected ", mu1 + mu2, "\nbut got", Dec)
+            exit(1)
+        itr += 1
+        
+    print(GREEN + "TLWE Homomorphic TEST: OK" + BLACK)
+
+    
+# check calc result compare with correct answer
 def main():
     calc_test()
     elliptic_lagrange_test()
@@ -425,6 +455,7 @@ def main():
     paillier_he_test()
     zk_proof_test()
     tlwe_test()
+    tlwe_he_test()
     
     print(GREEN + "ALL CONFIRMED" + BLACK)
 

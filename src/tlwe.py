@@ -8,11 +8,11 @@ from torus import (
 )
 
 # security parameter for 128bits security strength
-n = 630
-sigma = 2 ** (-15)
+# n = 630
+# sigma = 2 ** (-15)
 
 # p : OK?
-p = 1024
+# p = 1024
 
 # secret key: sk_tlwe = (s_1, s_2, ... ,s_n) ∈ Bn {0, 1}
 def key_generator(n: int) -> np.array:
@@ -28,13 +28,13 @@ def modulo_gaussian(mu: float, sigma: float, size: int = 1) -> float:
 # b = sigma(s_j * a_j) + e + mu
 # c = (a, b)
 def tlwe_encrypt(sk: np.array, mu: float, sigma: float) -> np.array:
-    a = np.array([rnd_torus(32) for _ in range(len(sk))], dtype=np.float64)
+    a = np.array([rnd_torus(64) for _ in range(len(sk))], dtype=np.float64)
     b = np.dot(a, sk) + modulo_gaussian(mu, sigma, 1)[0] + mu
     c = np.append(a, b)
     return c
 
 
-# mu = (⌊p * mu_aster⌉ mod p / p)
+# mu = (⌊p * mu_aster⌉ mod p / 2p)
 def tlwe_decrypt(sk: np.array, c: np.array, p: int) -> float:
     b = c[-1]
     a = c[0:-1]
