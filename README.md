@@ -6,7 +6,7 @@ it includes
 - RSA Encryption
 - Paillier Cryptosystem
 - Lagrange Interpolation on Elliptic Curve(BLS12-381)
-- Homomorphic Encryption (RSA, ElGamal over EC, Paillier cryptosystem)
+- Homomorphic Encryption (RSA, ElGamal over EC, Paillier cryptosystem, TLWE)
 - zk-proof on Elliptic Curve(BLS12-381)
 - TLWE(LWE encryption over torus)
 

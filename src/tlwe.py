@@ -11,7 +11,6 @@ from torus import (
 # n = 630
 # sigma = 2 ** (-15)
 
-# p : OK?
 # p = 1024
 
 # secret key: sk_tlwe = (s_1, s_2, ... ,s_n) ∈ Bn {0, 1}
@@ -20,8 +19,8 @@ def key_generator(n: int) -> np.array:
 
 
 # modulo gausiaan distribution
-def modulo_gaussian(mu: float, sigma: float, size: int = 1) -> float:
-    return np.random.normal(mu, sigma, size) % 1
+def modulo_gaussian(ave: float, sigma: float, size: int = 1) -> float:
+    return np.random.normal(ave, sigma, size) % 1
 
 
 # a = N(mu, sigma)
@@ -41,3 +40,23 @@ def tlwe_decrypt(sk: np.array, c: np.array, p: int) -> float:
     mu_aster = b - np.dot(sk, a)
     mu = (scaling(p * mu_aster) % p) / p
     return mu
+
+
+# {0, 1} -> [0, 1)
+def binary_encoder(mu: int) -> float:
+    return mu / 2
+
+
+# [0, 1) -> {0, 1}
+def binary_decoder(dec: float) -> int:
+    return scaling(2 * dec) % 2
+
+
+# {0, ... , p-1} -> [0, 1)
+def integer_encoder(mu: int, p: int) -> float:
+    return (mu % p) / p
+
+
+# [0, 1) -> {0, ... , p-1}
+def integer_decoder(dec: float, p: int) -> int:
+    return scaling(p * dec) % p

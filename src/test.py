@@ -419,23 +419,61 @@ def tlwe_he_test():
     sigma = 2 ** (-15)
     # p : OK?
     p = 2 ** 10
+    
+    # encode binary
+    print(GREEN + "binary encoded" + BLACK)
     itr = 0
-    while (itr < 50):
-        upper = int(p / 4)
-        # P in {0, 1/p, ..., p-1/p}
-        mu1 = secrets.randbelow(upper) / p
-        mu2 = secrets.randbelow(upper) / p
+    while itr < 50:
+        upper = int(p / 2)
         sk = tlwe.key_generator(n)
-        c1 = tlwe.tlwe_encrypt(sk, mu1, sigma)
-        c2 = tlwe.tlwe_encrypt(sk, mu2, sigma)
-        C = c1 + c2
-        Dec = tlwe.tlwe_decrypt(sk, C, p)
-        if (mu1 + mu2) % 1 == Dec:
-            print(Dec, "==>", mu1 + mu2)
+        
+        # binary encoded
+        mu1 = secrets.randbelow(2)
+        mu2 = secrets.randbelow(2)
+        mu1_encoded = tlwe.binary_encoder(mu1)
+        mu2_encoded = tlwe.binary_encoder(mu2)
+        c1 = tlwe.tlwe_encrypt(sk, mu1_encoded, sigma)
+        c2 = tlwe.tlwe_encrypt(sk, mu2_encoded, sigma)
+        C1 = c1 + c2
+        Dec1 = tlwe.binary_decoder(tlwe.tlwe_decrypt(sk, C1, p))
+
+        if (mu1 + mu2) % 2 == Dec1:
+            print(Dec1, "==>", (mu1 + mu2) % 2)
         else:
-            print("expected ", mu1 + mu2, "\nbut got", Dec)
+            print("expected ", mu1 + mu2, "\nbut got", Dec1)
             exit(1)
-        itr += 1
+        
+        # integer encoded
+        mu3 = secrets.randbelow(int(p/2))
+        mu4 = secrets.randbelow(int(p/2))        
+        mu3_encoded = tlwe.integer_encoder(mu3, p)
+        mu4_encoded = tlwe.integer_encoder(mu4, p) 
+        c3 = tlwe.tlwe_encrypt(sk, mu3_encoded, sigma)
+        c4 = tlwe.tlwe_encrypt(sk, mu4_encoded, sigma)        
+        C2 = c3 + c4        
+        Dec2 = tlwe.integer_decoder(tlwe.tlwe_decrypt(sk, C2, p), p)
+        
+        if (mu3+ mu4) % p == Dec2:
+            print(Dec2, "==>", (mu3 + mu4) % p)
+        else:
+            print("expected ", (mu3 + mu4) % p, "\nbut got", Dec2)
+            exit(1)
+
+        mu5 = secrets.randbelow(p) / p
+        mu6 = secrets.randbelow(p) / p
+        c5 = tlwe.tlwe_encrypt(sk, mu5, sigma)
+        c6 = tlwe.tlwe_encrypt(sk, mu6, sigma)        
+        C3 = c5 + c6
+        Dec3 = tlwe.tlwe_decrypt(sk, C3, p)
+        
+        if (mu5 + mu6) % 1 == Dec3:
+            print(Dec3, "==>", (mu5 + mu6) % 1)
+        else:
+            print("expected ", (mu5 + mu6) % 1, "\nbut got", Dec3)
+            exit(1)
+        
+            
+        itr += 1    
         
     print(GREEN + "TLWE Homomorphic TEST: OK" + BLACK)
 
@@ -456,7 +494,7 @@ def main():
     zk_proof_test()
     tlwe_test()
     tlwe_he_test()
-    
+
     print(GREEN + "ALL CONFIRMED" + BLACK)
 
 
